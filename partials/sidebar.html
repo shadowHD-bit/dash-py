@@ -1,12 +1,41 @@
 <div class="sidebar">
     <div class="sidebar_contentainer">
         <div class="sidebar_logo">
-            <p class="logo">ЛОГОТИП</p>
+            <a href="/" class="logo">
+               ДЭШ-ПАЙ
+            </a>
         </div>
         <div class="sidebar_menu">
-            <a href="/main" class="sidebar_btn">Главная</a>
-            <a href="/about" class="sidebar_btn">О проекте</a>
-            <a href="/settings" class="sidebar_btn">Настройки</a>
+            <a href="/main" class="sidebar_btn">
+                <div class="sidebar_btn_content">
+                    <div class="icon">
+                        <img class="icon_img" src="{{url_for('static', filename='icons/global.svg')}}" alt="main" width="18"/>
+                    </div>
+                    <div class="text">
+                        Главная
+                    </div>
+                </div>
+            </a>
+            <a href="/about" class="sidebar_btn">
+                <div class="sidebar_btn_content">
+                    <div class="icon">
+                        <img src="{{url_for('static', filename='icons/team.svg')}}" alt="main" width="18"/>
+                    </div>
+                    <div class="text">
+                        О проекте
+                    </div>
+                </div>
+            </a>
+            <a href="/settings" class="sidebar_btn">
+                <div class="sidebar_btn_content">
+                    <div class="icon">
+                        <img src="{{url_for('static', filename='icons/settings.svg')}}" alt="main" width="18"/>
+                    </div>
+                    <div class="text">
+                        Настройки
+                    </div>
+                </div>
+            </a>
         </div>
     </div>
 </div>
