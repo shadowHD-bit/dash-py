@@ -1,7 +1,9 @@
-from flask import Blueprint, render_template
+import dash
+from dash import html
 
-about = Blueprint('about', __name__, template_folder='templates', static_folder='statics')
+dash.register_page(__name__,name="О проекте" ,path='/about')
 
-@about.route('/')
-def index():
-    return render_template('about.html')
+layout = html.Div([
+    html.H1('This is our about page', className='test'),
+    html.Div('This is our about page content.'),
+])

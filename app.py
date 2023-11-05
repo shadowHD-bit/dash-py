@@ -1,19 +1,41 @@
-from flask import Flask, render_template
-from pages.main.main import main
-from pages.about.about import about
-from pages.settings.settings import settings
-from pages.dataset.dataset import dataset
+import dash
+from dash import Dash, html, dcc
+import dash_bootstrap_components as dbc
 
-app = Flask(__name__, template_folder="partials", static_folder="statics")
+from utils.UI.colors import colors
 
-app.register_blueprint(main, url_prefix="/")
-app.register_blueprint(about, url_prefix="/about")
-app.register_blueprint(settings, url_prefix="/settings")
-app.register_blueprint(dataset, url_prefix="/dataset")
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+app = Dash(__name__, use_pages=True,  external_stylesheets=[
+           dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP])
 
-if __name__ == "__main__":
+app.layout = dbc.Container([
+    html.Div(
+        dbc.Row(style={'margin': '0px 30px', 'backgroundColor': 'white', 'borderRadius': 15, 'minHeight': '96vh'}, children=[
+                dbc.Col(width=2, className="sidebar", children=[
+                    dbc.Row(className='sidebar__logo', children=[
+                        html.Div(f"ДЭШ-ПАЙ")
+                    ]),
+                    dbc.Row(className="sidebar__links", children=[
+                        dcc.Link(html.Div(f"{page['name']}"), href=page["relative_path"], className='sidebar__btn_links') for page in dash.page_registry.values() if page['name'] != 'Index'
+                    ])
+                ]),
+                dbc.Col([
+                    dbc.Row(
+                        dbc.Breadcrumb(
+                            items=[
+                                {"label": "Информационная панель",
+                                    "href": "/", "external_link": True},
+                            ],
+                        )
+                    ),
+                    dbc.Row([
+                        dash.page_container
+                    ])
+                ], width=10),
+                ]
+                ),
+    )
+], fluid=True, style={'backgroundColor': colors['Non_Photo_blue'], 'margin': 0, 'padding': '20px 0px', 'height': '100%'})
+
+if __name__ == '__main__':
     app.run(debug=True)

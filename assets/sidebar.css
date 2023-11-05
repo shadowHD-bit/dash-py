@@ -1,0 +1,28 @@
+.sidebar__btn_links{
+    padding: 8px 0px;
+    text-decoration: none;
+    color: #0077b6;
+    transition: .3s ease all;
+    text-align: center;
+}
+
+.sidebar__btn_links:hover{
+    background-color: #caf0f8;
+    transition: .3s ease all;
+}
+
+.sidebar__links{
+    padding-top: 30px;
+}
+
+.sidebar{
+    padding-top: 20px;
+    border-right: 1px solid #caf0f8;
+}
+
+.sidebar__logo{
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    color: black;
+}
