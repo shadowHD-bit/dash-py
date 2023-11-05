@@ -20,14 +20,14 @@ app.layout = dbc.Container([
                     ])
                 ]),
                 dbc.Col([
-                    dbc.Row(
-                        dbc.Breadcrumb(
+                    dbc.Row(className="header", children=[
+                        dbc.Breadcrumb(style={'textDecoration': 'none'},
                             items=[
                                 {"label": "Информационная панель",
                                     "href": "/", "external_link": True},
                             ],
                         )
-                    ),
+                    ]),
                     dbc.Row([
                         dash.page_container
                     ])
