@@ -17,12 +17,6 @@ app.layout = dbc.Container([
                     dbc.Row(className="sidebar__links", children=[
                         dcc.Link(html.Div(f"{page['name']}"), href=page["relative_path"], className='sidebar__btn_links') for page in dash.page_registry.values() if page['name'] != 'Index'
                     ]),
-                    # dbc.Row(className="sidebar__links", children=[
-                    #     dcc.Link(html.Div(f"{dash.page_registry.values()[0]['name']}"), href=dash.page_registry.values()[0]["relative_path"], className='sidebar__btn_links'),
-                    #     dcc.Link(html.Div(f"{dash.page_registry.values()['name']['name']}"), href=dash.page_registry.values()['name']["relative_path"], className='sidebar__btn_links'),
-                    #     dcc.Link(html.Div(f"{dash.page_registry.values()['name']['name']}"), href=dash.page_registry.values()['name']["relative_path"], className='sidebar__btn_links'),
-                    #     dcc.Link(html.Div(f"{dash.page_registry.values()['name']['name']}"), href=dash.page_registry.values()['name']["relative_path"], className='sidebar__btn_links')
-                    # ])
                 ]),
                 dbc.Col([
                     dbc.Row(className="header", children=[

@@ -3,7 +3,7 @@ from dash import html, dash_table, callback, Input, Output
 import dash_bootstrap_components as dbc
 import pandas as pd
 
-dash.register_page(__name__, title="Информационная панель | Датасет", name="Датасет", path='/dataset')
+dash.register_page(__name__, title="Информационная панель | Датасет", name="Датасет", path='/dataset', order=1)
 
 df = pd.read_excel('data\data.xlsx')
 
