@@ -127,7 +127,7 @@ layout = html.Div([
         ]),
         dbc.Row(children=[
             dbc.Col(children=[
-                dbc.Card(className='main_card', children=[
+                dbc.Card(color="info",outline=True, className='main_card', children=[
                     dbc.CardBody(className='main_card__body', children=[
                         dbc.Row(children=[
                             dbc.Col(className='main_card__icon_container', children=[
@@ -147,7 +147,7 @@ layout = html.Div([
                 ])
             ], lg=4, md=6, xs=12),
             dbc.Col(children=[
-                dbc.Card(className='main_card', children=[
+                dbc.Card(color="info",outline=True, className='main_card', children=[
                     dbc.CardBody(className='main_card__body', children=[
                         dbc.Row(children=[
                             dbc.Col(className='main_card__icon_container', children=[
@@ -167,7 +167,7 @@ layout = html.Div([
                 ])
             ], lg=4, md=6, xs=12),
             dbc.Col(children=[
-                dbc.Card(className='main_card', children=[
+                dbc.Card(color="info",outline=True, className='main_card', children=[
                     dbc.CardBody(className='main_card__body', children=[
                         dbc.Row(children=[
                             dbc.Col(className='main_card__icon_container', children=[
@@ -193,7 +193,7 @@ layout = html.Div([
         ]),
         dbc.Row(children=[
             dbc.Col(children=[
-                dbc.Card(className='main_card', children=[
+                dbc.Card(color="info",outline=True, className='main_card', children=[
                     dbc.CardBody(className='main_card__body', children=[
                         dbc.Row(children=[
                             dbc.Col(className='main_card__icon_container', children=[
@@ -215,7 +215,7 @@ layout = html.Div([
                 ])
             ], lg=4, md=6, xs=12),
             dbc.Col(children=[
-                dbc.Card(className='main_card', children=[
+                dbc.Card(color="info",outline=True, className='main_card', children=[
                     dbc.CardBody(className='main_card__body', children=[
                         dbc.Row(children=[
                             dbc.Col(className='main_card__icon_container', children=[
@@ -237,7 +237,7 @@ layout = html.Div([
                 ])
             ], lg=4, md=6, xs=12),
             dbc.Col(children=[
-                dbc.Card(className='main_card', children=[
+                dbc.Card(color="info",outline=True, className='main_card', children=[
                     dbc.CardBody(className='main_card__body', children=[
                         dbc.Row(children=[
                             dbc.Col(className='main_card__icon_container', children=[
@@ -264,7 +264,7 @@ layout = html.Div([
         ]),
         dbc.Row(children=[
             dbc.Col(children=[
-                dbc.Card(className='main_card', children=[
+                dbc.Card(color="info",outline=True, className='main_card', children=[
                     dbc.CardBody(className='main_card__body', children=[
                         dbc.Row(children=[
                             dbc.Col(className='main_card__icon_container', children=[
@@ -286,7 +286,7 @@ layout = html.Div([
                 ])
             ], lg=4, md=6, xs=12),
             dbc.Col(children=[
-                dbc.Card(className='main_card', children=[
+                dbc.Card(color="info",outline=True, className='main_card', children=[
                     dbc.CardBody(className='main_card__body', children=[
                         dbc.Row(children=[
                             dbc.Col(className='main_card__icon_container', children=[
@@ -309,7 +309,7 @@ layout = html.Div([
                 ])
             ], lg=4, md=6, xs=12),
             dbc.Col(children=[
-                dbc.Card(className='main_card', children=[
+                dbc.Card(color="info",outline=True, className='main_card', children=[
                     dbc.CardBody(className='main_card__body', children=[
                         dbc.Row(children=[
                             dbc.Col(className='main_card__icon_container', children=[

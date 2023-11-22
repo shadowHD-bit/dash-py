@@ -1,10 +1,10 @@
 .header{
     padding-top: 20px;
     padding-bottom: 5px;
-    border-bottom: 1px solid #caf0f8;
+    border-bottom: 1px solid #3498db;
 }
 
 .header .breadcrumb{
     text-decoration: none;
-    color: #caf0f8;
+    color: #3498db;
 }
