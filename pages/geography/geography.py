@@ -1,18 +1,48 @@
 import dash
 from dash import html, dcc, callback, Output, Input
-import pandas as pd
 import plotly.express as px
 import dash_bootstrap_components as dbc
+from data import MAIN_DF
+from pages.geography.graphs.geography_map import build_geography_map
+from partials.statistic_card import build_statistic_card
+
 
 dash.register_page(__name__, name="География", path='/geography', order=3)
 
-df = pd.read_excel('data\data.xlsx')
-region_list = df["Region"].unique()
 
+df = MAIN_DF
+region_list = df["Region"].unique()
+country_list = df["Country"].unique()
+state_list = df["State"].unique()
+city_list = df["City"].unique()
 
 layout = html.Div([
     dbc.Row(className="mt-2 mb-3", children=[
             html.H5('Общая информация')
+            ]
+            ),
+    dbc.Row(className="mt-2 mb-3", children=[
+            dbc.Col(children=[
+                    build_statistic_card(
+                        'bi bi-globe-americas', 'Кол-во континентов', len(region_list), 'шт.')
+                    ], lg=3, md=6, xs=12),
+            dbc.Col(children=[
+                build_statistic_card(
+                    'bi bi-airplane-engines-fill', 'Кол-во стран', len(country_list), 'шт.')
+            ], lg=3, md=6, xs=12),
+            dbc.Col(children=[
+                    build_statistic_card(
+                        'bi bi-house', 'Кол-во штатов', len(state_list), 'шт.')
+                    ], lg=3, md=6, xs=12),
+            dbc.Col(children=[
+                    build_statistic_card(
+                        'bi bi-building', 'Кол-во городов', len(city_list), 'шт.')
+                    ], lg=3, md=6, xs=12),
+
+            ]
+            ),
+    dbc.Row(className="mt-2 mb-3", children=[
+            html.H5('География продаж')
             ]
             ),
     dbc.Row(children=[
@@ -20,20 +50,13 @@ layout = html.Div([
             dbc.Card(color='info', outline=True, className="p-0 m-2", children=[
                 dbc.CardHeader(children=[
                     html.P("Географическая карта стран клиентов"),
-                    dbc.RadioItems(
-                        id="candidate",
-                        className="btn-group",
-                        inputClassName="btn-check",
-                        labelClassName="btn btn-outline-primary",
-                        labelCheckedClassName="active",
-                        options=[
-                            {"label": "Sales", "value": "Sales"},
-                            {"label": "Profit", "value": "Profit"},
-                            {"label": "Quantity", "value": "Quantity"},
-                        ],
-                        value="Sales",
-                    ),
-                ]
+                    dbc.Col(children=[
+                            dcc.Dropdown(
+                                ["Sales", "Profit", "Quantity"],
+                                id="candidate",
+                                placeholder="Выберите параметр",
+                                value="Sales"
+                            )], xs=12, md=3),],
                 ),
                 dbc.CardBody(children=[
                     dbc.Row(
@@ -48,7 +71,7 @@ layout = html.Div([
         ], xs=12),
     ]),
     dbc.Row(className="mt-2 mb-3", children=[
-            html.H5('Общая информация')
+            html.H5('Информация по странам')
             ]
             ),
     dbc.Row(children=[
@@ -65,7 +88,7 @@ layout = html.Div([
                             dcc.Dropdown(
                                 region_list,
                                 id="region_dropdown",
-                                placeholder="Select a Region"
+                                placeholder="Выберите регион"
                             ),
                         ], xs=12, md=6, lg=3),
                         dbc.Col(id="country_container", children=[
@@ -96,16 +119,8 @@ layout = html.Div([
     Output("map_graph", "figure"),
     Input("candidate", "value"))
 def display_choropleth(candidate):
-    total_sales_by_country = df.groupby(
-        'Country', as_index=False)[candidate].sum()
-    total_sales_by_country_df = pd.DataFrame(total_sales_by_country)
-    fig_map = px.choropleth(total_sales_by_country_df, color=total_sales_by_country_df[candidate],
-                            locations=total_sales_by_country_df['Country'],
-                            locationmode="country names",
-                            labels={candidate: candidate}
-                            )
-    fig_map.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
-    return fig_map
+    fig = build_geography_map(candidate)
+    return fig
 
 
 @callback(
@@ -118,7 +133,7 @@ def display_country_dropown(n):
     dropdown = dcc.Dropdown(
         country_list,
         id="country_dropdown",
-        placeholder="Select a Country"
+        placeholder="Выберите страну"
     ),
     return dropdown
 
@@ -133,7 +148,7 @@ def display_state_dropown(n):
     dropdown = dcc.Dropdown(
         state_list,
         id="state_dropdown",
-        placeholder="Select a State"
+        placeholder="Выберите штат"
     ),
     return dropdown
 
@@ -148,7 +163,7 @@ def display_city_dropown(n):
     dropdown = dcc.Dropdown(
         city_list,
         id="city_dropdown",
-        placeholder="Select a City"
+        placeholder="Выберите город"
     ),
     return dropdown
 
@@ -163,94 +178,94 @@ def display_city_graph(city):
         df_timeline = df_timelinef.sort_values(by="Order Date")
 
         fig_timeline_sales = px.line(df_timeline, x='Order Date', y="Sales")
-        fig_timeline_sales.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+        fig_timeline_sales.update_layout(
+            margin={"r": 15, "t": 15, "l": 15, "b": 15})
 
         fig_timeline_profit = px.line(df_timeline, x='Order Date', y="Profit")
-        fig_timeline_profit.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+        fig_timeline_profit.update_layout(
+            margin={"r": 15, "t": 15, "l": 15, "b": 15})
 
         fig_timeline_count = px.line(df_timeline, x='Order Date', y="Quantity")
-        fig_timeline_count.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
-
-
+        fig_timeline_count.update_layout(
+            margin={"r": 15, "t": 15, "l": 15, "b": 15})
 
         sum_sales = df_timeline['Sales'].values.sum()
         sum_count = df_timeline['Quantity'].values.sum()
         sum_profit = df_timeline['Profit'].values.sum()
 
-        # children = dcc.Graph(id='graph_city', figure=fig_timeline)
+        fig_bar_sales = px.bar(df_timelinef, y="Category",
+                               x="Sales", color="Sub-Category", barmode="group")
+        fig_bar_profit = px.bar(
+            df_timelinef, y="Category", x="Profit", color="Sub-Category", barmode="group")
+        fig_bar_count = px.bar(df_timelinef, y="Category",
+                               x="Quantity", color="Sub-Category", barmode="group")
+
         children = dbc.Row(children=[
             dbc.Row(children=[
                 dbc.Col(children=[
-                    dbc.Card(color="info", outline=True, className='main_card', children=[
+                    build_statistic_card(
+                        'bi bi-cash-stack', 'Прибыль', round(sum_profit, 2), '$')
+                ], lg=4, md=6, xs=12),
+                dbc.Col(children=[
+                    build_statistic_card(
+                        'bi bi-bank', 'Продажи', round(sum_sales, 2), '$')
+                ], lg=4, md=6, xs=12),
+                dbc.Col(children=[
+                    build_statistic_card(
+                        'bi bi-clipboard-data-fill', 'Объем', sum_count, 'шт.')
+                ], lg=4, md=6, xs=12),
+            ]),
+            dbc.Row(children=[
+                dbc.Col(children=[
+                    dbc.Card(color="info", outline=True, className='main_card mt-2', children=[
                         dbc.CardBody(className='main_card__body', children=[
-                            dbc.Row(children=[
-                                dbc.Col(className='main_card__icon_container', children=[
-                                    html.H4(
-                                                  html.I(
-                                                      className="bi bi-cash-stack"),
-                                                  className="main_card__icon")
-                                ], width=4),
-                                dbc.Col(className='main_card__text_container', children=[
-                                    html.H6("Прибыль"),
-                                    html.H4(
-                                        f'{round(sum_profit, 2)} $'),
-                                ], width=8),
-                            ]),
-                        ]
-                        )
+                            dcc.Graph(id='graph_city',
+                                      figure=fig_timeline_profit)
+                        ])
                     ])
                 ], lg=4, md=6, xs=12),
                 dbc.Col(children=[
-                    dbc.Card(color="info", outline=True, className='main_card', children=[
+                    dbc.Card(color="info", outline=True, className='main_card mt-2', children=[
                         dbc.CardBody(className='main_card__body', children=[
-                            dbc.Row(children=[
-                                dbc.Col(className='main_card__icon_container', children=[
-                                    html.H4(
-                                                  html.I(
-                                                      className="bi bi-bank"),
-                                                  className="main_card__icon")
-                                ], width=4),
-                                dbc.Col(className='main_card__text_container', children=[
-                                    html.H6("Продажи"),
-                                    html.H4(
-                                        f'{round(sum_sales, 2)} $'),
-                                ], width=8),
-                            ]),
-                        ]
-                        )
+                            dcc.Graph(id='graph_city',
+                                      figure=fig_timeline_sales)
+                        ])
                     ])
                 ], lg=4, md=6, xs=12),
                 dbc.Col(children=[
-                    dbc.Card(color="info", outline=True, className='main_card', children=[
+                    dbc.Card(color="info", outline=True, className='main_card mt-2', children=[
                         dbc.CardBody(className='main_card__body', children=[
-                            dbc.Row(children=[
-                                dbc.Col(className='main_card__icon_container', children=[
-                                    html.H4(
-                                                  html.I(
-                                                      className="bi bi-clipboard-data-fill"),
-                                                  className="main_card__icon")
-                                ], width=4),
-                                dbc.Col(className='main_card__text_container', children=[
-                                    html.H6("Объем"),
-                                    html.H4(f'{sum_count} шт.'),
-                                ], width=8),
-                            ]),
-                        ]
-                        )
+                            dcc.Graph(id='graph_city',
+                                      figure=fig_timeline_count)
+                        ])
                     ])
                 ], lg=4, md=6, xs=12),
             ]),
             dbc.Row(children=[
                 dbc.Col(children=[
-                    dcc.Graph(id='graph_city', figure=fig_timeline_profit)
+                    dbc.Card(color="info", outline=True, className='main_card mt-2', children=[
+                        dbc.CardBody(className='main_card__body', children=[
+                            dcc.Graph(id='graph_city',
+                                      figure=fig_bar_profit)
+                        ])
+                    ])
                 ], lg=4, md=6, xs=12),
                 dbc.Col(children=[
-                    dcc.Graph(id='graph_city', figure=fig_timeline_sales)
+                    dbc.Card(color="info", outline=True, className='main_card mt-2', children=[
+                        dbc.CardBody(className='main_card__body', children=[
+                            dcc.Graph(id='graph_city',
+                                      figure=fig_bar_sales)
+                        ])
+                    ])
                 ], lg=4, md=6, xs=12),
                 dbc.Col(children=[
-                    dcc.Graph(id='graph_city', figure=fig_timeline_count)
-                ], lg=4, md=6, xs=12),
-            ])
+                    dbc.Card(color="info", outline=True, className='main_card mt-2', children=[
+                        dbc.CardBody(className='main_card__body', children=[
+                            dcc.Graph(id='graph_city',
+                                      figure=fig_bar_count)
+                        ])
+                    ])
+                ], lg=4, md=6, xs=12),]),
         ])
         return children
     else:

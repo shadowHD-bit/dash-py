@@ -1,0 +1,16 @@
+from data import MAIN_DF
+import plotly.express as px
+import pandas as pd
+
+def build_geography_map(candidate):
+    total_sales_by_country = MAIN_DF.groupby(
+            'Country', as_index=False)[candidate].sum()
+        
+    total_sales_by_country_df = pd.DataFrame(total_sales_by_country)
+    fig_map = px.choropleth(total_sales_by_country_df, color=total_sales_by_country_df[candidate],
+                                locations=total_sales_by_country_df['Country'],
+                                locationmode="country names",
+                                labels={candidate: candidate}
+                                )
+    fig_map.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+    return fig_map
