@@ -85,3 +85,23 @@
 .accordion {
     margin: 10px 0px;
 }
+
+
+/*------------------------- Datetime input -------------------------*/
+
+.DateInput_input {
+    padding: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Roboto', sans-serif !important;
+    text-align: center;
+}
+
+.DateInput_input::placeholder {
+    font-family: 'Roboto', sans-serif !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}

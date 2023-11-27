@@ -1,3 +1,4 @@
+from datetime import date
 import dash
 from dash import html, dcc, callback, Output, Input
 import dash_bootstrap_components as dbc
@@ -24,12 +25,26 @@ layout = html.Div([
             dbc.Card(outline=True, className="p-0 m-2", children=[
                 dbc.CardHeader(children=[
                     html.P("Топ категорий", className='subtitle_content__block'),
-                    dbc.Col(children=[
-                        dcc.Dropdown(
-                            ['Sales', 'Quantity', 'Discount', 'Profit', 'Shipping Cost'],
-                            'Sales',
-                            id='get_category_top'),
-                    ], xs=12)
+                    dbc.Row(children=[
+                        dbc.Col(children=[
+                            dcc.Dropdown(
+                                ['Sales', 'Quantity', 'Discount',
+                                    'Profit', 'Shipping Cost'],
+                                'Sales',
+                                id='get_category_top'),
+                        ], xs=6),
+                        dbc.Col(children=[
+                            dcc.DatePickerRange(
+                                id='picker_date_top_category',
+                                min_date_allowed=date(2012, 1, 1),
+                                max_date_allowed=date(2015, 12, 30),
+                                start_date=date(2012, 1, 1),
+                                end_date=date(2015, 12, 30),
+                                display_format='D/M/Y'
+                            ),
+                        ], xs=6)
+                    ]),
+
                 ]),
                 dbc.CardBody(children=[
                     dbc.Row(
@@ -42,13 +57,27 @@ layout = html.Div([
         dbc.Col(children=[
             dbc.Card(outline=True, className="p-0 m-2", children=[
                 dbc.CardHeader(children=[
-                    html.P("Топ-10 под-категорий", className='subtitle_content__block'),
-                    dbc.Col(children=[
-                        dcc.Dropdown(
-                            ['Sales', 'Quantity', 'Discount', 'Profit', 'Shipping Cost'],
-                            'Sales',
-                            id='get_subcategory_top'),
-                    ], xs=12)
+                    html.P("Топ-10 под-категорий",
+                           className='subtitle_content__block'),
+                    dbc.Row(children=[
+                        dbc.Col(children=[
+                            dcc.Dropdown(
+                                ['Sales', 'Quantity', 'Discount',
+                                    'Profit', 'Shipping Cost'],
+                                'Sales',
+                                id='get_subcategory_top'),
+                        ], xs=6),
+                        dbc.Col(children=[
+                            dcc.DatePickerRange(
+                                id='picker_date_top_subcategory',
+                                min_date_allowed=date(2012, 1, 1),
+                                max_date_allowed=date(2015, 12, 30),
+                                start_date=date(2012, 1, 1),
+                                end_date=date(2015, 12, 30),
+                                display_format='D/M/Y'
+                            ),
+                        ], xs=6)
+                    ]),
                 ]),
                 dbc.CardBody(children=[
                     dbc.Row(
@@ -66,7 +95,8 @@ layout = html.Div([
                     html.P("Топ-10 товаров", className='subtitle_content__block'),
                     dbc.Col(children=[
                         dcc.Dropdown(
-                            ['Sales', 'Quantity', 'Discount', 'Profit', 'Shipping Cost'],
+                            ['Sales', 'Quantity', 'Discount',
+                                'Profit', 'Shipping Cost'],
                             'Sales',
                             id='get_product_top'),
                     ], xs=12)
@@ -84,7 +114,8 @@ layout = html.Div([
         dbc.Col(children=[
             dbc.Card(outline=True, className="p-0 m-2", children=[
                 dbc.CardHeader(children=[
-                    html.P("Иерархическая карта товаров", className='subtitle_content__block'),
+                    html.P("Иерархическая карта товаров",
+                           className='subtitle_content__block'),
                     dbc.Col(children=[
                         dcc.Dropdown(
                             ['Category', 'Sub-Category', 'Product Name'],
@@ -127,10 +158,12 @@ def build_treemap_callback(value):
 
 @callback(
     Output("hist_top_category", "children"),
-    [Input("get_category_top", "value")]
+    [Input("get_category_top", "value"),
+     Input('picker_date_top_category', 'start_date'),
+     Input('picker_date_top_category', 'end_date')]
 )
-def build_category_top_hist_callback(value):
-    graph = build_bar_top_category(df, 'Category', value)
+def build_category_top_hist_callback(value, start_date, end_date):
+    graph = build_bar_top_category(df, 'Category', value, start_date, end_date)
     graph_container = dcc.Graph(
         id='top_category_bar',
         figure=graph,
@@ -141,10 +174,12 @@ def build_category_top_hist_callback(value):
 
 @callback(
     Output("hist_top_subcategory", "children"),
-    [Input("get_subcategory_top", "value")]
+    [Input("get_subcategory_top", "value"),
+     Input('picker_date_top_subcategory', 'start_date'),
+     Input('picker_date_top_subcategory', 'end_date')]
 )
-def build_subcategory_top_hist_callback(value):
-    graph = build_bar_top_subcategory(df, 'Sub-Category', value)
+def build_subcategory_top_hist_callback(value, start_date, end_date):
+    graph = build_bar_top_subcategory(df, 'Sub-Category', value, start_date, end_date)
     graph_container = dcc.Graph(
         id='top_subcategory_bar',
         figure=graph,
@@ -165,4 +200,3 @@ def build_product_top_hist_callback(value):
         style={'backgroundColor': 'rgba(0,0,0,0)'}
     )
     return graph_container
-
