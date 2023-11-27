@@ -1,0 +1,87 @@
+/*------------------------- Card -------------------------*/
+
+.main_card {
+    margin: 5px 0px;
+}
+
+.main_card .main_card__body {
+    padding: 0px 0px;
+}
+
+.main_card .main_card__body .main_card__icon_container {
+    border-right: 1px solid #d2d2d2;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.main_card .main_card__body .main_card__text_container {
+    padding: 10px 10px;
+    margin: 10px 0px;
+}
+
+.main_card__icon_container .main_card__icon {
+    font-size: 40px;
+}
+
+
+
+/*------------------------- Sidebar -------------------------*/
+
+.sidebar__btn_links {
+    padding: 20px 0px;
+    text-decoration: none;
+    transition: .3s ease all;
+    text-align: center;
+    border-bottom: 1px solid #2b2b2b;
+    color: #2b2b2b;
+}
+
+.sidebar {
+    height: 100%;
+}
+
+.sidebar__btn_links:hover {
+    background-color: #2b2b2b;
+    transition: .3s ease all;
+    color: white !important;
+}
+
+.sidebar_container {
+    padding-top: 20px;
+    border-right: 1px solid #2b2b2b;
+    height: 100%;
+
+}
+
+.sidebar__logo {
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    border-bottom: 1px solid #2b2b2b;
+    padding-bottom: 15px;
+}
+
+
+
+/*------------------------- Header -------------------------*/
+
+.header {
+    padding-top: 20px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #3498db;
+}
+
+.header .breadcrumb {
+    text-decoration: none;
+    color: #3498db;
+}
+
+
+/*------------------------- Accordion -------------------------*/
+
+.accordion {
+    margin: 10px 0px;
+}

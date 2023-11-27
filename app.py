@@ -5,7 +5,7 @@ from utils.UI.theme import URL_THEME_LIGHT
 
 
 app = Dash(__name__, use_pages=True,  external_stylesheets=[
-           dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP, URL_THEME_LIGHT]) #, suppress_callback_exceptions=True
+           dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP, URL_THEME_LIGHT])  # , suppress_callback_exceptions=True
 
 app.layout = dbc.Container([
     dbc.Row(className='p-0 m-0', children=[

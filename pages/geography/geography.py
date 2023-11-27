@@ -3,7 +3,7 @@ from dash import html, dcc, callback, Output, Input
 import plotly.express as px
 import dash_bootstrap_components as dbc
 from data import MAIN_DF
-from pages.geography.graphs.geography_map import build_geography_map
+from graphs.geography.geography_map import build_geography_map
 from partials.statistic_card import build_statistic_card
 
 
@@ -24,20 +24,20 @@ layout = html.Div([
     dbc.Row(className="mt-2 mb-3", children=[
             dbc.Col(children=[
                 build_statistic_card(
-                        'bi bi-globe-americas', 'Кол-во континентов', len(region_list), 'шт.')
-                    ], lg=3, md=6, xs=12),
+                    'bi bi-globe-americas', 'Кол-во континентов', len(region_list), 'шт.')
+            ], lg=3, md=6, xs=12),
             dbc.Col(children=[
                 build_statistic_card(
                     'bi bi-airplane-engines-fill', 'Кол-во стран', len(country_list), 'шт.')
             ], lg=3, md=6, xs=12),
             dbc.Col(children=[
                 build_statistic_card(
-                        'bi bi-house', 'Кол-во штатов', len(state_list), 'шт.')
-                    ], lg=3, md=6, xs=12),
+                    'bi bi-house', 'Кол-во штатов', len(state_list), 'шт.')
+            ], lg=3, md=6, xs=12),
             dbc.Col(children=[
                 build_statistic_card(
-                        'bi bi-building', 'Кол-во городов', len(city_list), 'шт.')
-                    ], lg=3, md=6, xs=12),
+                    'bi bi-building', 'Кол-во городов', len(city_list), 'шт.')
+            ], lg=3, md=6, xs=12),
 
             ]
             ),

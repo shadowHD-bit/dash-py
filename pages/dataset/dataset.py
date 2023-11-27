@@ -1,5 +1,5 @@
 import dash
-from dash import html, dash_table, callback, Input, Output
+from dash import html, dash_table
 import dash_bootstrap_components as dbc
 import pandas as pd
 
@@ -10,10 +10,10 @@ df = pd.read_excel('data\data.xlsx')
 layout = html.Div([
     dbc.Row(style={'margin': '10px'}, children=[
         dbc.Row([
-            html.H3("Основной датесет")
+            html.P("Основной датесет", className='text_title')
         ]),
         dbc.Row([
-            html.P("Из-за большого размера исходного датасета, на странице выводяться только первые 300 строк исходного файла XLSX. Чтобы ознакомиться с полным датасетом, нажмите кнопку Скачать.", style={'margin': 0})
+            dbc.Alert("Из-за большого размера исходного датасета, на странице выводяться только первые 300 строк исходного файла XLSX. Чтобы ознакомиться с полным датасетом, нажмите кнопку 'Скачать'.", color="info"),
         ]),
         dbc.Row([
             dbc.Button("Скачать", color="success", id="btn-download-dataset", className="me-1",style={'width': 'fit-content', 'margin': '5px 12px'}),

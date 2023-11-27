@@ -4,10 +4,14 @@ import dash_bootstrap_components as dbc
 import pandas as pd
 from datetime import datetime
 from data import MAIN_DF
+from graphs.geography.geography_map import build_geography_map
+from graphs.products.pie_category_value import build_pie_category_value
+from graphs.products.pie_subcategory_value import build_pie_subcategory_value
+from graphs.products.treemap_product import build_treemap_product
 from partials.statistic_card import build_statistic_card
-import plotly.express as px
 
 from partials.statistic_card_diff import build_statistic_card_diff
+from utils.const import DOMAIN
 
 dash.register_page(__name__, name="Главная",
                    title="Информационная панель | Главная", path='/main', order=0)
@@ -124,118 +128,186 @@ else:
         (prev_sum_count_month - sum_count_month)/prev_sum_count_month*100
 
 
-fig_value_categories_pie = px.pie(df, values='Quantity', names='Category')
-fig_value_categories_pie.update_traces(
-    textposition='inside', textinfo='percent+label')
-fig_value_categories_pie.update_layout(margin=dict(t=0, l=0, r=0, b=0))
-
-fig_value_subcategories_pie = px.pie(
-    df, values='Quantity', names='Sub-Category')
-fig_value_subcategories_pie.update_traces(
-    textposition='inside', textinfo='percent+label')
-fig_value_subcategories_pie.update_layout(margin=dict(t=0, l=0, r=0, b=0))
-
-
 layout = html.Div([
     dbc.Container(children=[
         dbc.Row(class_name='mt-3 mb-2', children=[
             dbc.Col(children=[
-                html.H3('За все время')
-            ], width=12)
-        ]),
-        dbc.Row(children=[
-            dbc.Col(children=[
-                build_statistic_card('bi bi-cash-stack',
-                                     'Прибыль', round(sum_profit, 2), '$')
-            ], lg=4, md=6, xs=12),
-            dbc.Col(children=[
-                build_statistic_card(
-                    'bi bi-bank', 'Продажи', round(sum_sales, 2), '$')
-            ], lg=4, md=6, xs=12),
-            dbc.Col(children=[
-                build_statistic_card(
-                    'bi bi-clipboard-data-fill', 'Объем', sum_count, 'шт.')
-            ], lg=4, md=6, xs=12),
-        ]),
-        dbc.Row(class_name='mt-3 mb-2', children=[
-            dbc.Col(children=[
-                html.H3('За год')
-            ], width=12)
-        ]),
-        dbc.Row(children=[
-            dbc.Col(children=[
-                build_statistic_card_diff('bi bi-cash-stack', 'Прибыль', round(
-                    sum_profit_year, 2), '$', round(percentage_profit_year, 2))
-            ], lg=4, md=6, xs=12),
-            dbc.Col(children=[
-                build_statistic_card_diff(
-                    'bi bi-bank', 'Продажи', round(sum_sales_year, 2), '$', round(percentage_sales_year, 2))
-            ], lg=4, md=6, xs=12),
-            dbc.Col(children=[
-                build_statistic_card_diff(
-                    'bi bi-clipboard-data-fill', 'Объем', sum_count_year, 'шт.', round(percentage_count_year, 2))
-            ], lg=4, md=6, xs=12),
-        ]),
-        dbc.Row(class_name='mt-3 mb-2', children=[
-            dbc.Col(children=[
-                html.H3('За месяц')
-            ], width=12)
-        ]),
-        dbc.Row(children=[
-            dbc.Col(children=[
-                build_statistic_card_diff('bi bi-cash-stack', 'Прибыль', round(
-                    sum_profit_month, 2), '$', round(percentage_profit_month, 2))
-            ], lg=4, md=6, xs=12),
-            dbc.Col(children=[
-                build_statistic_card_diff(
-                    'bi bi-bank', 'Продажи', round(sum_sales_month, 2), '$', round(percentage_sales_month, 2))
-            ], lg=4, md=6, xs=12),
-            dbc.Col(children=[
-                build_statistic_card_diff(
-                    'bi bi-clipboard-data-fill', 'Объем', sum_count_month, 'шт.', round(percentage_count_month, 2))
-            ], lg=4, md=6, xs=12),
-        ]),
-        dbc.Row(class_name='mt-3 mb-2', children=[
-            dbc.Col(children=[
-                html.H3('Категории и подкатегории')
-            ], width=12)
-        ]),
-        dbc.Row(children=[
-            dbc.Col(children=[
-                dbc.Card(color='info', outline=True, className="p-0 m-2", children=[
-                    dbc.CardHeader(
-                        html.P("Объем продаж по категориям")
+                dbc.Row(children=[
+                    html.P('Основные показатели',
+                           className='title_content__block')
+                ]
+                ),
+                dbc.Row(children=[
+                    dbc.Col(children=[
+                        dbc.Accordion(children=[
+                            dbc.AccordionItem(
+                                [
+                                    dbc.Row(children=[
+                                        dbc.Col(children=[
+                                            build_statistic_card('bi bi-cash-stack',
+                                                'Прибыль', round(sum_profit, 2), '$')
+                                        ], xs=12),
+                                        dbc.Col(children=[
+                                            build_statistic_card(
+                                                'bi bi-bank', 'Продажи', round(sum_sales, 2), '$')
+                                        ], xs=12),
+                                        dbc.Col(children=[
+                                            build_statistic_card(
+                                                'bi bi-clipboard-data-fill', 'Объем', sum_count, 'шт.')
+                                        ], xs=12),
+                                    ]),
+                                ],
+                                title="За все время",
+                            ),
+                        ], always_open=True),
+                    ], xs=12, md=4),
+                    dbc.Col(children=[
+                        dbc.Accordion(children=[
+                            dbc.AccordionItem(
+                                [
+                                    dbc.Row(children=[
+                                        dbc.Col(children=[
+                                            build_statistic_card_diff('bi bi-cash-stack', 'Прибыль', round(
+                                                sum_profit_year, 2), '$', round(percentage_profit_year, 2))
+                                        ], xs=12),
+                                        dbc.Col(children=[
+                                            build_statistic_card_diff(
+                                                'bi bi-bank', 'Продажи', round(sum_sales_year, 2), '$', round(percentage_sales_year, 2))
+                                        ], xs=12),
+                                        dbc.Col(children=[
+                                            build_statistic_card_diff(
+                                                'bi bi-clipboard-data-fill', 'Объем', sum_count_year, 'шт.', round(percentage_count_year, 2))
+                                        ], xs=12),
+                                    ]),
+                                ],
+                                title="За год",
+                            ),
+                        ], always_open=True),
+                    ], xs=12, md=4),
+                    dbc.Col(children=[
+                        dbc.Accordion(children=[
+                            dbc.AccordionItem(
+                                [
+                                    dbc.Row(children=[
+                                        dbc.Col(children=[
+                                            build_statistic_card_diff('bi bi-cash-stack', 'Прибыль', round(
+                                                sum_profit_month, 2), '$', round(percentage_profit_month, 2))
+                                        ], xs=12),
+                                        dbc.Col(children=[
+                                            build_statistic_card_diff(
+                                                'bi bi-bank', 'Продажи', round(sum_sales_month, 2), '$', round(percentage_sales_month, 2))
+                                        ], xs=12),
+                                        dbc.Col(children=[
+                                            build_statistic_card_diff(
+                                                'bi bi-clipboard-data-fill', 'Объем', sum_count_month, 'шт.', round(percentage_count_month, 2))
+                                        ], xs=12),
+                                    ]),
+                                ],
+                                title="За месяц",
+                            ),
+                        ], always_open=True),
+                    ], xs=12, md=4),
+                    dbc.Row(children=[
+                        html.P('Категории, подкатегории и товары',
+                               className='title_content__block')
+                    ]
                     ),
-                    dbc.CardBody(children=[
-                        dbc.Row(
-                            dbc.Col(children=[
-                                dcc.Graph(
-                                    id='example-graph',
-                                    figure=fig_value_categories_pie
-                                )
-                            ])
-                        )
-                    ])
-                ])
-            ], xs=12, lg=6),
-            dbc.Col(children=[
-                dbc.Card(color='info', outline=True, className="p-0 m-2", children=[
-                    dbc.CardHeader(
-                        html.P("Объем продаж по под-категориям")
+                    dbc.Row(justify="around", children=[
+                        dbc.Col(children=[
+                            dbc.Accordion(children=[
+                                dbc.AccordionItem(
+                                    [
+                                        dbc.Row(
+                                            dbc.Col(children=[
+                                                dcc.Graph(
+                                                    id='graph',
+                                                    figure=build_pie_category_value(
+                                                        df)
+                                                )
+                                            ])
+                                        )
+                                    ],
+                                    title="Объем продаж по категориям",
+                                ),
+                            ], always_open=True),
+                        ], xs=12, lg=6),
+                        dbc.Col(children=[
+                            dbc.Accordion(children=[
+                                dbc.AccordionItem(
+                                    [
+                                        dbc.Row(
+                                            dbc.Col(children=[
+                                                dcc.Graph(
+                                                    id='graph',
+                                                    figure=build_pie_subcategory_value(
+                                                        df)
+                                                )
+                                            ])
+                                        )
+                                    ],
+                                    title="Объем продаж по под-категориям",
+                                ),
+                            ], always_open=True),
+                        ], xs=12, lg=6),
+                    ]),
+                    dbc.Row(children=[
+                        dbc.Col(children=[
+                            dbc.Accordion(children=[
+                                dbc.AccordionItem(
+                                    [
+                                        dbc.Row(
+                                            dbc.Col(children=[
+                                                dcc.Graph(
+                                                    id='graph',
+                                                    figure=build_treemap_product(
+                                                        df, ['Category', 'Sub-Category'])
+                                                )
+                                            ])
+                                        )
+                                    ],
+                                    title="Иерархическая карта товаров",
+                                ),
+                            ], always_open=True),
+                        ], xs=12),
+                    ]),
+                    dbc.Row(children=[
+                        html.A('Перейти на страницу статистики товаров',
+                               className='text_link', href=f"{DOMAIN}products")
+                    ]
                     ),
-                    dbc.CardBody(children=[
-                        dbc.Row(
-                            dbc.Col(children=[
-                                dcc.Graph(
-                                    id='example-graph',
-                                    figure=fig_value_subcategories_pie
-                                )
-                            ])
-                        )
-                    ])
+                    dbc.Row(children=[
+                        html.P('География продаж',
+                               className='title_content__block')
+                    ]
+                    ),
+                    dbc.Row(children=[
+                        dbc.Col(children=[
+                            dbc.Accordion(children=[
+                                dbc.AccordionItem(
+                                    [
+                                        dbc.Row(
+                                            dbc.Col(children=[
+                                                dcc.Graph(
+                                                    id='graph',
+                                                    figure=build_geography_map('Sales')
+                                                )
+                                            ])
+                                        )
+                                    ],
+                                    title="Карта географии продаж",
+                                ),
+                            ], always_open=True),
+                        ], xs=12),
+                    ]
+                    ),
+                    dbc.Row(children=[
+                        html.A('Перейти на страницу географии продаж',
+                               className='text_link', href=f"{DOMAIN}geography")
+                    ]
+                    ),
                 ])
-            ], xs=12, lg=6)
-        ]),
-        dbc.Row(children=[]),
+            ])
+
+        ])
     ], fluid=True)
 ])

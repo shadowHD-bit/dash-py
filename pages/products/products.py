@@ -1,14 +1,13 @@
 import dash
 from dash import html, dcc, callback, Output, Input
 import dash_bootstrap_components as dbc
-import plotly.express as px
-import pandas as pd
+
 
 from data import MAIN_DF
-from pages.products.graphs.category_top_hist import build_bar_top_category
-from pages.products.graphs.product_top_hist import build_bar_top_product
-from pages.products.graphs.subcategory_top_hist import build_bar_top_subcategory
-from pages.products.graphs.treemap_product import build_treemap_product
+from graphs.products.category_top_hist import build_bar_top_category
+from graphs.products.product_top_hist import build_bar_top_product
+from graphs.products.subcategory_top_hist import build_bar_top_subcategory
+from graphs.products.treemap_product import build_treemap_product
 
 
 dash.register_page(__name__, name="Товары",
@@ -17,14 +16,14 @@ df = MAIN_DF
 
 layout = html.Div([
     dbc.Row(className="mt-2 mb-3", children=[
-        html.H5('Общая информация')
+        html.P('Общая информация', className='title_content__block')
     ]
     ),
     dbc.Row(children=[
         dbc.Col(children=[
-            dbc.Card(color='info', outline=True, className="p-0 m-2", children=[
+            dbc.Card(outline=True, className="p-0 m-2", children=[
                 dbc.CardHeader(children=[
-                    html.P("Топ категорий"),
+                    html.P("Топ категорий", className='subtitle_content__block'),
                     dbc.Col(children=[
                         dcc.Dropdown(
                             ['Sales', 'Quantity', 'Discount', 'Profit', 'Shipping Cost'],
@@ -41,9 +40,9 @@ layout = html.Div([
             ])
         ], xs=12, md=6),
         dbc.Col(children=[
-            dbc.Card(color='info', outline=True, className="p-0 m-2", children=[
+            dbc.Card(outline=True, className="p-0 m-2", children=[
                 dbc.CardHeader(children=[
-                    html.P("Топ-10 под-категорий"),
+                    html.P("Топ-10 под-категорий", className='subtitle_content__block'),
                     dbc.Col(children=[
                         dcc.Dropdown(
                             ['Sales', 'Quantity', 'Discount', 'Profit', 'Shipping Cost'],
@@ -62,9 +61,9 @@ layout = html.Div([
     ]),
     dbc.Row(children=[
         dbc.Col(children=[
-            dbc.Card(color='info', outline=True, className="p-0 m-2", children=[
+            dbc.Card(outline=True, className="p-0 m-2", children=[
                 dbc.CardHeader(children=[
-                    html.P("Топ-10 товаров"),
+                    html.P("Топ-10 товаров", className='subtitle_content__block'),
                     dbc.Col(children=[
                         dcc.Dropdown(
                             ['Sales', 'Quantity', 'Discount', 'Profit', 'Shipping Cost'],
@@ -83,9 +82,9 @@ layout = html.Div([
     ]),
     dbc.Row(children=[
         dbc.Col(children=[
-            dbc.Card(color='info', outline=True, className="p-0 m-2", children=[
+            dbc.Card(outline=True, className="p-0 m-2", children=[
                 dbc.CardHeader(children=[
-                    html.P("Иерархическая карта товаров"),
+                    html.P("Иерархическая карта товаров", className='subtitle_content__block'),
                     dbc.Col(children=[
                         dcc.Dropdown(
                             ['Category', 'Sub-Category', 'Product Name'],
@@ -104,7 +103,7 @@ layout = html.Div([
         ], xs=12),
     ]),
     dbc.Row(children=[
-        html.H5('Статистика по товару')
+        html.P('Статистика по товару', className='title_content__block')
     ]),
     dbc.Row(children=[
 
@@ -120,24 +119,10 @@ def build_treemap_callback(value):
     treemap_graph = build_treemap_product(df, value)
     treemap = dcc.Graph(
         id='treemap-graph',
-        figure=treemap_graph
+        figure=treemap_graph,
+        style={'backgroundColor': 'rgba(0,0,0,0)'}
     )
     return treemap
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 @callback(
@@ -148,7 +133,8 @@ def build_category_top_hist_callback(value):
     graph = build_bar_top_category(df, 'Category', value)
     graph_container = dcc.Graph(
         id='top_category_bar',
-        figure=graph
+        figure=graph,
+        style={'backgroundColor': 'rgba(0,0,0,0)'}
     )
     return graph_container
 
@@ -161,7 +147,8 @@ def build_subcategory_top_hist_callback(value):
     graph = build_bar_top_subcategory(df, 'Sub-Category', value)
     graph_container = dcc.Graph(
         id='top_subcategory_bar',
-        figure=graph
+        figure=graph,
+        style={'backgroundColor': 'rgba(0,0,0,0)'}
     )
     return graph_container
 
@@ -174,7 +161,8 @@ def build_product_top_hist_callback(value):
     graph = build_bar_top_product(df, 'Product Name', value)
     graph_container = dcc.Graph(
         id='top_product_bar',
-        figure=graph
+        figure=graph,
+        style={'backgroundColor': 'rgba(0,0,0,0)'}
     )
     return graph_container
 
