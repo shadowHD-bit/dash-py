@@ -56,7 +56,9 @@ layout = html.Div([
                                 id="candidate",
                                 placeholder="Выберите параметр",
                                 value="Sales"
-                            )], xs=12, md=3),],
+                            )],
+                        xs=12, md=3),
+                    ],
                 ),
                 dbc.CardBody(children=[
                     dbc.Row(

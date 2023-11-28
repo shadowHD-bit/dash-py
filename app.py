@@ -10,7 +10,7 @@ app = Dash(__name__, use_pages=True,  external_stylesheets=[
 app.layout = dbc.Container([
     dbc.Row(className='p-0 m-0', children=[
         dbc.Col(
-            dbc.Card(outline=True, color='dark', className='dbc', style={'margin': '0px 30px', 'padding': '0', 'borderRadius': 15, 'minHeight': '96vh'}, children=[
+            dbc.Card(outline=True, color='dark', className='dbc content__card', children=[
                 dbc.Row(className='p-0 m-0 sidebar', children=[
                     dbc.Col(width=2, className="sidebar_container", children=[
                         dbc.Row(className='sidebar__logo', children=[
