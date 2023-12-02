@@ -89,6 +89,11 @@
     color: #3498db;
 }
 
+.date_container__heaer{
+    text-align: right;
+    display: flex;
+    justify-content: end;
+}
 
 /*------------------------- Accordion -------------------------*/
 

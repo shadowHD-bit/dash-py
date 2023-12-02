@@ -1,12 +1,12 @@
 from datetime import datetime
 import dash
-from dash import html, dcc, callback, Output, Input
+from dash import html, dcc, callback, Output, Input, State
 from dash_bootstrap_templates import ThemeSwitchAIO
 from utils.UI.theme import URL_THEME_DARK, URL_THEME_LIGHT
 import dash_bootstrap_components as dbc
 from datetime import date
 
-from utils.const import CURRENT_DATE
+from utils.const import CURRENT_DATE, START_DATE
 
 theme_toggle = ThemeSwitchAIO(
     aio_id="theme",
@@ -41,11 +41,11 @@ layout = html.Div(style={'margin': '10px'}, children=[
                         html.P("Изменение даты")
                     ]),
                     dbc.Row(children=[
+                        dcc.Store(id="current-time-store", storage_type='local'),
                         dcc.DatePickerSingle(
                             id='my-date-picker-single',
                             min_date_allowed=date(2012, 1, 1),
                             max_date_allowed=date(2015, 12, 29),
-                            date=datetime.strptime(CURRENT_DATE, '%Y-%m-%d').date()
                         ),
                         html.Div(id='output-container-date-picker-single')
                     ]),
@@ -56,9 +56,24 @@ layout = html.Div(style={'margin': '10px'}, children=[
 ])
 
 
-# @callback(
-#     Output('output-container-date-picker-single', 'children'),
-#     Input('my-date-picker-single', 'date'))
-# def update_output(date_value):
-#     CURRENT_DATE = str(date_value)
-#     return ""
+@callback(
+    Output('my-date-picker-single', 'date'),
+    Input('current-time-store', 'modified_timestamp'),
+    State('current-time-store', 'data')
+)
+def update_output(ts, value):
+    if value:
+        return datetime.strptime(value, '%Y-%m-%d').date()
+    else:
+        return datetime.strptime(START_DATE, '%Y-%m-%d').date()
+
+
+@callback(
+    Output('current-time-store', 'data'),
+    Input('my-date-picker-single', 'date'),
+    State('current-time-store', 'data')
+)
+def update_local_output(value, state):
+    if value:
+        return str(value)
+    
