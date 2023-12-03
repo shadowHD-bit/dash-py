@@ -3,7 +3,8 @@ from dash import html
 import dash_bootstrap_components as dbc
 from partials.alert_link_page import build_alert_link_page
 
-dash.register_page(__name__, path='/')
+dash.register_page(__name__, name="Index",
+                   title="Информационная панель", path='/')
 
 layout = html.Div(className="start_content", children=[
     dbc.Row(children=[

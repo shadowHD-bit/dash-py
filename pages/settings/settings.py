@@ -19,10 +19,19 @@ dash.register_page(__name__, title="Информационная панель | 
 
 layout = html.Div(style={'margin': '10px'}, children=[
     dbc.Row(className="mb-3", children=[
-        html.H3("Настройки информационной панели")
+        html.P("Настройки информационной панели",
+               className='title_content__block')
     ]),
-    dbc.Row(children=[
+    dbc.Row(className='mb-3', children=[
         dbc.Col(children=[
+            dbc.Row(className="mb-3", children=[
+                html.P("Изменение темы информационной панели",
+                    className='subtitle_content__block')
+            ]),
+            dbc.Row(className="mb-3", children=[
+                html.P("Функция смены темы дэшборда позволяет пользователям изменять внешний вид дэшборда, выбирая цветовую гамму, шрифты, и другие параметры дизайна. Это может быть полезно для создания персонализированных дэшбордов, которые соответствуют визуальным предпочтениям пользователей или корпоративному стилю компании. Функция смены темы обычно позволяет выбрать из предустановленных тем или создать собственную тему с помощью настраиваемых параметров.",
+                    className='text')
+            ]),
             dbc.Card(color="light", outline=True, children=[
                 dbc.Row(className='p-3', children=[
                     dbc.Row(children=[
@@ -33,15 +42,24 @@ layout = html.Div(style={'margin': '10px'}, children=[
                     ]),
                 ]),
             ])
-        ], xs=12, md=6, lg=4),
+        ], xs=12, md=6, lg=6),
         dbc.Col(children=[
+            dbc.Row(className="mb-3", children=[
+                html.P("Изменение текущей даты",
+                    className='subtitle_content__block')
+            ]),
+            dbc.Row(className="mb-3", children=[
+                html.P("Функция смены текущей даты дэшборда позволяет пользователям отображать данные за определенный период времени, например, за прошлый месяц, текущий год или любой другой выбранный промежуток времени. Это удобно для анализа и сравнения данных в разные временные периоды, а также для отслеживания динамики изменений в различных параметрах. ",
+                    className='text')
+            ]),
             dbc.Card(color="light", outline=True, children=[
                 dbc.Row(className='p-3', children=[
                     dbc.Row(children=[
                         html.P("Изменение даты")
                     ]),
                     dbc.Row(children=[
-                        dcc.Store(id="current-time-store", storage_type='local'),
+                        dcc.Store(id="current-time-store",
+                                  storage_type='local'),
                         dcc.DatePickerSingle(
                             id='my-date-picker-single',
                             min_date_allowed=date(2012, 1, 1),
@@ -51,7 +69,7 @@ layout = html.Div(style={'margin': '10px'}, children=[
                     ]),
                 ]),
             ])
-        ], xs=12, md=6, lg=4),
+        ], xs=12, md=6, lg=6),
     ])
 ])
 
@@ -76,4 +94,3 @@ def update_output(ts, value):
 def update_local_output(value, state):
     if value:
         return str(value)
-    

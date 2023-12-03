@@ -1,4 +1,4 @@
-.start_content{
+.start_content {
     width: 100%;
     height: 100%;
     display: flex;
@@ -7,21 +7,23 @@
     justify-content: center;
 }
 
-.start__text_title{
+.start__text_title {
     font-size: 20px;
     font-weight: bold;
-    color: #0077b6;
     margin-top: 15px;
+    text-align: center;
+    margin-bottom: 10px;
 }
 
-.start__text_subtitle{
+.start__text_subtitle {
     font-size: 16px;
-    color: #0077b6;
     text-align: center;
     max-width: 500px;
+    line-height: 18px;
+    margin-bottom: 30px;
 }
 
-.start_content__images{
+.start_content__images {
     width: 400px;
-    margin-top: 100px;
+    margin-top: 60px;
 }

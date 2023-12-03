@@ -18,7 +18,11 @@ city_list = df["City"].unique()
 
 layout = html.Div([
     dbc.Row(className="mt-2 mb-3", children=[
-            html.H5('Общая информация')
+            html.P('География продаж', className='title_content__block')
+            ]
+            ),
+    dbc.Row(className="mt-2 mb-3", children=[
+            html.P('Общая информация', className='subtitle_content__block')
             ]
             ),
     dbc.Row(className="mt-2 mb-3", children=[
@@ -41,15 +45,11 @@ layout = html.Div([
 
             ]
             ),
-    dbc.Row(className="mt-2 mb-3", children=[
-            html.H5('География продаж')
-            ]
-            ),
     dbc.Row(children=[
         dbc.Col(children=[
-            dbc.Card(color='info', outline=True, className="p-0 m-2", children=[
+            dbc.Card(outline=True, className="p-0 m-0", children=[
                 dbc.CardHeader(children=[
-                    html.P("Географическая карта стран клиентов"),
+                    html.P("Географическая карта стран клиентов", className='subtitle_content__block'),
                     dbc.Col(children=[
                             dcc.Dropdown(
                                 ["Sales", "Profit", "Quantity"],
@@ -57,8 +57,8 @@ layout = html.Div([
                                 placeholder="Выберите параметр",
                                 value="Sales"
                             )],
-                        xs=12, md=3),
-                    ],
+                            xs=12, md=3),
+                ],
                 ),
                 dbc.CardBody(children=[
                     dbc.Row(
@@ -73,18 +73,13 @@ layout = html.Div([
         ], xs=12),
     ]),
     dbc.Row(className="mt-2 mb-3", children=[
-            html.H5('Информация по странам')
+            html.H5('Статистика продаж по провинциям', className='subtitle_content__block mt-4')
             ]
             ),
     dbc.Row(children=[
         dbc.Col(children=[
-            dbc.Card(color='info', outline=True, className="p-0 m-2", children=[
+            dbc.Card(outline=True, className="p-0 m-0", children=[
                 dbc.CardHeader(children=[
-                    dbc.Row(children=[
-                        dbc.Col(
-                            html.P("Статистика по городам"),
-                        )
-                    ]),
                     dbc.Row(children=[
                         dbc.Col(id="region_container", children=[
                             dcc.Dropdown(
@@ -130,14 +125,17 @@ def display_choropleth(candidate):
     Input("region_dropdown", "value"),
 )
 def display_country_dropown(n):
-    country_df = df.loc[df['Region'] == n]
-    country_list = country_df['Country'].unique()
-    dropdown = dcc.Dropdown(
-        country_list,
-        id="country_dropdown",
-        placeholder="Выберите страну"
-    ),
-    return dropdown
+    if n:
+        country_df = df.loc[df['Region'] == n]
+        country_list = country_df['Country'].unique()
+        dropdown = dcc.Dropdown(
+            country_list,
+            id="country_dropdown",
+            placeholder="Выберите страну"
+        ),
+        return dropdown
+    else: 
+        return "" 
 
 
 @callback(
@@ -145,14 +143,17 @@ def display_country_dropown(n):
     Input("country_dropdown", "value"),
 )
 def display_state_dropown(n):
-    state_df = df.loc[df['Country'] == n]
-    state_list = state_df['State'].unique()
-    dropdown = dcc.Dropdown(
-        state_list,
-        id="state_dropdown",
-        placeholder="Выберите штат"
-    ),
-    return dropdown
+    if n:
+        state_df = df.loc[df['Country'] == n]
+        state_list = state_df['State'].unique()
+        dropdown = dcc.Dropdown(
+            state_list,
+            id="state_dropdown",
+            placeholder="Выберите штат"
+        ),
+        return dropdown
+    else: 
+        return "" 
 
 
 @callback(
@@ -160,14 +161,17 @@ def display_state_dropown(n):
     Input("state_dropdown", "value"),
 )
 def display_city_dropown(n):
-    city_df = df.loc[df['State'] == n]
-    city_list = city_df['City'].unique()
-    dropdown = dcc.Dropdown(
-        city_list,
-        id="city_dropdown",
-        placeholder="Выберите город"
-    ),
-    return dropdown
+    if n:
+        city_df = df.loc[df['State'] == n]
+        city_list = city_df['City'].unique()
+        dropdown = dcc.Dropdown(
+            city_list,
+            id="city_dropdown",
+            placeholder="Выберите город"
+        ),
+        return dropdown
+    else: 
+        return "" 
 
 
 @callback(
