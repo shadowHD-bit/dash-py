@@ -1,13 +1,12 @@
 /*------------------------- PARTIALS -------------------------*/
 /*------------------------- Main Card -------------------------*/
 
-.content__card{
+.content__card {
     padding: 0;
     border-radius: 15;
     min-height: 96vh;
     margin: 0;
 }
-
 
 
 /*------------------------- Card -------------------------*/
@@ -38,7 +37,7 @@
     font-size: 40px;
 }
 
-.right_part__container{
+.right_part__container {
     position: absolute;
     right: 0;
 }
@@ -58,7 +57,7 @@
     border-top: 1px solid #d2d2d2;
 }
 
-.sidebar__links{
+.sidebar__links {
     padding: 0;
     margin: 0;
 }
@@ -107,13 +106,13 @@
     text-decoration: none;
 }
 
-.date_container__header{
+.date_container__header {
     text-align: right;
     display: flex;
     justify-content: end;
 }
 
-.theme_container__header{
+.theme_container__header {
     text-align: right;
     display: flex;
     justify-content: end;
@@ -149,6 +148,20 @@
 
 /*------------------------- Alert -------------------------*/
 
-.alert{
+.alert {
     min-height: 200px;
+}
+
+body{
+    overflow-y: hidden;
+    animation: anim_hidden 18s forwards;
+}
+
+@keyframes anim_hidden {
+    from {
+        overflow-y: hidden;
+    }
+    to {
+        overflow-y: visible;
+    }
 }
