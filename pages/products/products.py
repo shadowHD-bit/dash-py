@@ -14,7 +14,7 @@ from partials.statistic_card import build_statistic_card
 
 
 dash.register_page(__name__, name="Товары",
-                   title="Информационная панель | Товары", path='/products')
+                   title="Информационная панель | Товары", path='/products', order=2)
 df = MAIN_DF
 
 layout = html.Div([

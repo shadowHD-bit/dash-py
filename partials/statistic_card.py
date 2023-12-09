@@ -3,7 +3,7 @@ import dash_bootstrap_components as dbc
 
 
 def build_statistic_card(icon_class, title_text, body_text, designation):
-    card = dbc.Card(outline=True, className='main_card', children=[
+    card = dbc.Card(outline=True,color='light', className='main_card shadow-sm', children=[
         dbc.CardBody(className='main_card__body', children=[
             dbc.Row(children=[
                 dbc.Col(className='main_card__icon_container', children=[

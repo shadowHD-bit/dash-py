@@ -27,7 +27,7 @@ layout = html.Div(children=[
             dbc.Col(children=[
                 dbc.Row(children=[
                     html.P('Основные показатели',
-                           className='title_content__block')
+                           className='title_content__block text-info')
                 ]
                 ),
                 dbc.Row(children=[
@@ -63,7 +63,7 @@ layout = html.Div(children=[
                     ], xs=12, md=4),
                     dbc.Row(children=[
                         html.P('Категории, подкатегории и товары',
-                               className='title_content__block')
+                               className='title_content__block text-info')
                     ]
                     ),
                     dbc.Row(justify="around", children=[
@@ -126,12 +126,12 @@ layout = html.Div(children=[
                     ]),
                     dbc.Row(children=[
                         html.A('Перейти на страницу статистики товаров',
-                               className='text_link', href=f"{DOMAIN}products")
+                               className='text_link text-info', href=f"{DOMAIN}products")
                     ]
                     ),
                     dbc.Row(children=[
                         html.P('География продаж',
-                               className='title_content__block')
+                               className='title_content__block text-info')
                     ]
                     ),
                     dbc.Row(children=[
@@ -157,7 +157,7 @@ layout = html.Div(children=[
                     ),
                     dbc.Row(children=[
                         html.A('Перейти на страницу географии продаж',
-                               className='text_link', href=f"{DOMAIN}geography")
+                               className='text_link text-info', href=f"{DOMAIN}geography")
                     ]
                     ),
                 ])

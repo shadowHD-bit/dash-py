@@ -7,7 +7,7 @@ from graphs.geography.geography_map import build_geography_map
 from partials.statistic_card import build_statistic_card
 
 
-dash.register_page(__name__, name="География", path='/geography', order=3)
+dash.register_page(__name__, name="География", path='/geography', order=1)
 
 
 df = MAIN_DF
@@ -47,7 +47,7 @@ layout = html.Div([
             ),
     dbc.Row(children=[
         dbc.Col(children=[
-            dbc.Card(outline=True, className="p-0 m-0", children=[
+            dbc.Card(outline=True ,color='light', className="p-0 shadow-sm m-0", children=[
                 dbc.CardHeader(children=[
                     html.P("Географическая карта стран клиентов", className='subtitle_content__block'),
                     dbc.Col(children=[
@@ -78,7 +78,7 @@ layout = html.Div([
             ),
     dbc.Row(children=[
         dbc.Col(children=[
-            dbc.Card(outline=True, className="p-0 m-0", children=[
+            dbc.Card(outline=True,color='light', className="p-0 shadow-sm m-0", children=[
                 dbc.CardHeader(children=[
                     dbc.Row(children=[
                         dbc.Col(id="region_container", children=[
@@ -223,7 +223,7 @@ def display_city_graph(city):
             ]),
             dbc.Row(children=[
                 dbc.Col(children=[
-                    dbc.Card(color="info", outline=True, className='main_card mt-2', children=[
+                    dbc.Card(color="light", outline=True, className='main_card shadow-sm mt-2', children=[
                         dbc.CardBody(className='main_card__body', children=[
                             dcc.Graph(id='graph_city',
                                       figure=fig_timeline_profit)
@@ -231,7 +231,7 @@ def display_city_graph(city):
                     ])
                 ], lg=4, md=6, xs=12),
                 dbc.Col(children=[
-                    dbc.Card(color="info", outline=True, className='main_card mt-2', children=[
+                    dbc.Card(color="light", outline=True, className='main_card shadow-sm mt-2', children=[
                         dbc.CardBody(className='main_card__body', children=[
                             dcc.Graph(id='graph_city',
                                       figure=fig_timeline_sales)
@@ -239,7 +239,7 @@ def display_city_graph(city):
                     ])
                 ], lg=4, md=6, xs=12),
                 dbc.Col(children=[
-                    dbc.Card(color="info", outline=True, className='main_card mt-2', children=[
+                    dbc.Card(color="light", outline=True, className='main_card shadow-sm mt-2', children=[
                         dbc.CardBody(className='main_card__body', children=[
                             dcc.Graph(id='graph_city',
                                       figure=fig_timeline_count)
@@ -249,7 +249,7 @@ def display_city_graph(city):
             ]),
             dbc.Row(children=[
                 dbc.Col(children=[
-                    dbc.Card(color="info", outline=True, className='main_card mt-2', children=[
+                    dbc.Card(color="light", outline=True, className='main_card shadow-sm mt-2', children=[
                         dbc.CardBody(className='main_card__body', children=[
                             dcc.Graph(id='graph_city',
                                       figure=fig_bar_profit)
@@ -257,7 +257,7 @@ def display_city_graph(city):
                     ])
                 ], lg=4, md=6, xs=12),
                 dbc.Col(children=[
-                    dbc.Card(color="info", outline=True, className='main_card mt-2', children=[
+                    dbc.Card(color="light", outline=True, className='main_card shadow-sm mt-2', children=[
                         dbc.CardBody(className='main_card__body', children=[
                             dcc.Graph(id='graph_city',
                                       figure=fig_bar_sales)
@@ -265,7 +265,7 @@ def display_city_graph(city):
                     ])
                 ], lg=4, md=6, xs=12),
                 dbc.Col(children=[
-                    dbc.Card(color="info", outline=True, className='main_card mt-2', children=[
+                    dbc.Card(color="light", outline=True, className='main_card shadow-sm mt-2', children=[
                         dbc.CardBody(className='main_card__body', children=[
                             dcc.Graph(id='graph_city',
                                       figure=fig_bar_count)

@@ -1,76 +1,50 @@
 from datetime import datetime
 import dash
 from dash import html, dcc, callback, Output, Input, State
-from dash_bootstrap_templates import ThemeSwitchAIO
-from utils.UI.theme import URL_THEME_DARK, URL_THEME_LIGHT
 import dash_bootstrap_components as dbc
 from datetime import date
 
-from utils.const import CURRENT_DATE, START_DATE
-
-theme_toggle = ThemeSwitchAIO(
-    aio_id="theme",
-    themes=[URL_THEME_LIGHT, URL_THEME_DARK],
-    icons={"left": "fa fa-sun", "right": "fa fa-moon"},
-)
+from utils.const import START_DATE
 
 dash.register_page(__name__, title="Информационная панель | Настройки",
-                   name="Настройки", path='/settings', order=2)
+                   name="Настройки", path='/settings', order=4)
+
 
 layout = html.Div(style={'margin': '10px'}, children=[
     dbc.Row(className="mb-3", children=[
-        html.P("Настройки информационной панели",
-               className='title_content__block')
-    ]),
+            html.P("Настройки информационной панели",
+                   className='title_content__block')
+            ]),
     dbc.Row(className='mb-3', children=[
-        dbc.Col(children=[
-            dbc.Row(className="mb-3", children=[
-                html.P("Изменение темы информационной панели",
-                    className='subtitle_content__block')
-            ]),
-            dbc.Row(className="mb-3", children=[
-                html.P("Функция смены темы дэшборда позволяет пользователям изменять внешний вид дэшборда, выбирая цветовую гамму, шрифты, и другие параметры дизайна. Это может быть полезно для создания персонализированных дэшбордов, которые соответствуют визуальным предпочтениям пользователей или корпоративному стилю компании. Функция смены темы обычно позволяет выбрать из предустановленных тем или создать собственную тему с помощью настраиваемых параметров.",
-                    className='text')
-            ]),
-            dbc.Card(color="light", outline=True, children=[
-                dbc.Row(className='p-3', children=[
-                    dbc.Row(children=[
-                        html.P("Изменение темы")
-                    ]),
-                    dbc.Row(children=[
-                        theme_toggle
-                    ]),
+            dbc.Col(children=[
+                dbc.Row(className="mb-3", children=[
+                    html.P("Изменение текущей даты",
+                           className='subtitle_content__block')
                 ]),
-            ])
-        ], xs=12, md=6, lg=6),
-        dbc.Col(children=[
-            dbc.Row(className="mb-3", children=[
-                html.P("Изменение текущей даты",
-                    className='subtitle_content__block')
-            ]),
-            dbc.Row(className="mb-3", children=[
-                html.P("Функция смены текущей даты дэшборда позволяет пользователям отображать данные за определенный период времени, например, за прошлый месяц, текущий год или любой другой выбранный промежуток времени. Это удобно для анализа и сравнения данных в разные временные периоды, а также для отслеживания динамики изменений в различных параметрах. ",
-                    className='text')
-            ]),
-            dbc.Card(color="light", outline=True, children=[
-                dbc.Row(className='p-3', children=[
-                    dbc.Row(children=[
-                        html.P("Изменение даты")
-                    ]),
-                    dbc.Row(children=[
-                        dcc.Store(id="current-time-store",
-                                  storage_type='local'),
-                        dcc.DatePickerSingle(
-                            id='my-date-picker-single',
-                            min_date_allowed=date(2012, 1, 1),
-                            max_date_allowed=date(2015, 12, 29),
-                        ),
-                        html.Div(id='output-container-date-picker-single')
-                    ]),
+                dbc.Row(className="mb-3", children=[
+                    html.P("Функция смены текущей даты дэшборда позволяет пользователям отображать данные за определенный период времени, например, за прошлый месяц, текущий год или любой другой выбранный промежуток времени. Это удобно для анализа и сравнения данных в разные временные периоды, а также для отслеживания динамики изменений в различных параметрах. ",
+                           className='text')
                 ]),
+                dbc.Card(color="light", outline=True, children=[
+                    dbc.Row(className='p-3', children=[
+                        dbc.Row(children=[
+                            html.P("Изменение даты")
+                        ]),
+                        dbc.Row(children=[
+                            dcc.Store(id="current-time-store",
+                                      storage_type='local'),
+                            dcc.DatePickerSingle(
+                                id='my-date-picker-single',
+                                min_date_allowed=date(2012, 1, 1),
+                                max_date_allowed=date(2015, 12, 29),
+                            ),
+                            html.Div(id='output-container-date-picker-single')
+                        ]),
+                    ]),
+                ])
+            ], xs=12, md=6, lg=6),
             ])
-        ], xs=12, md=6, lg=6),
-    ])
+
 ])
 
 
@@ -94,3 +68,29 @@ def update_output(ts, value):
 def update_local_output(value, state):
     if value:
         return str(value)
+
+
+# @callback(
+#     Output('current-theme-store', 'data'),
+#     Input(ThemeSwitchAIO.ids.switch('theme'), 'value'),
+#     State('current-theme-store', 'data')
+# )
+# def update_output_theme(value, state):
+#     if value:
+#         return str(NAME_THEME_LIGHT)
+#     else:
+#         return str(NAME_THEME_DARK)
+
+
+# @callback(
+#     Output(ThemeSwitchAIO.ids.switch('theme'), 'value'),
+#     Input('current-theme-store', 'modified_timestamp'),
+#     State('current-theme-store', 'data')
+# )
+# def update_output_theme_local(ts, value):
+#     if value == 'FLATLY':
+#         return True
+#     else:
+#         return False
+    
+
