@@ -1,8 +1,9 @@
-# Dataset xlsx file
+# Датасет XLSX файла 
 data
 
-# Enviroment lib
+# Модули виртуального окружения
 venv
 
+# Изображения и гив файлы
 assets/images
 assets/gif

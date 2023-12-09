@@ -1,8 +1,12 @@
 import dash
-from dash import Dash, html, dcc
+from dash import html, dcc
 import dash_bootstrap_components as dbc
 
+
 def build_sidebar():
+    '''
+    Функция создания боковой панели дэша
+    '''
     sidebar = dbc.Col(width=2, className="sidebar_container", children=[
         dbc.Row(className='sidebar__logo', children=[
             html.Div(f"ДЭШ-ПАЙ")

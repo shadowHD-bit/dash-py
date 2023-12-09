@@ -3,8 +3,10 @@ import dash_bootstrap_components as dbc
 
 
 def build_statistic_card_diff(icon_class, title_text, body_text, designation, diff):
-
-    card = dbc.Card(outline=True,color='light', className='main_card shadow-sm', children=[
+    '''
+    Функция создания карточки метрики с процентным соотношением
+    '''
+    card = dbc.Card(outline=True, color='light', className='main_card shadow-sm', children=[
         dbc.CardBody(className='main_card__body', children=[
             dbc.Row(children=[
                 dbc.Col(className='main_card__icon_container', children=[

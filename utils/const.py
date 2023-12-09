@@ -1,6 +1,8 @@
-# Main domain web-site dashboard
+# Основной домен дэшборда
 DOMAIN = 'http://127.0.0.1:8050/'
 
-# Current date
+# Переменная текущей даты
 CURRENT_DATE = ''
+
+# Начальная дата (значение взята на основе датасета)
 START_DATE = '2014-11-30'
