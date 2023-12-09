@@ -8,8 +8,6 @@ from partials.statistic_card import build_statistic_card
 import plotly.express as px
 import dash_ag_grid as dag
 
-dash.register_page(__name__, name="Возвраты", path='/refunds', order=3)
-
 return_df = RETURNS_DF
 main_df = MAIN_DF
 merged_df = pd.merge(return_df, main_df, on='Order ID')

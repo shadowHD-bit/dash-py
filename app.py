@@ -1,12 +1,15 @@
 import dash
 from dash import Dash, html, dcc, Output, Input, State
 import dash_bootstrap_components as dbc
+from routes import register_pages
 from utils.UI.theme import URL_THEME_DARK, URL_THEME_LIGHT, NAME_THEME_DARK, NAME_THEME_LIGHT
 from utils.const import CURRENT_DATE, START_DATE
 from dash_bootstrap_templates import ThemeSwitchAIO
 
 app = Dash(__name__, use_pages=True,  external_stylesheets=[
            dbc.icons.BOOTSTRAP, dbc.themes.BOOTSTRAP])  # , suppress_callback_exceptions=True
+
+register_pages()
 
 app.layout = dbc.Container(id='main_container', children=[
     # Initial store date
@@ -19,13 +22,13 @@ app.layout = dbc.Container(id='main_container', children=[
                 dbc.Col(width=2, className="sidebar_container", children=[
                     dbc.Card(outline=True,color='light', className=f'content__card shadow', children=[
                         dbc.Row(className='sidebar__logo pt-4 pb-4 d-flex row shadow-sm m-0', children=[
-                            html.P(className='m-0 p-0 text-info', children=[
+                            html.P(id='text', className='m-0 p-0 text-info', children=[
                                 html.I(className="bi bi-bar-chart-line-fill mr-1"),
                                  "  ДЭШ-ПАЙ",
-                            ])
+                            ]),
                         ]),
                         dbc.Row(className="sidebar__links p-0 m-0", children=[
-                            dcc.Link(html.Div(f"{page['name']}"), href=page["relative_path"], className='sidebar__btn_links text-body m-0') for page in dash.page_registry.values() if page['name'] != 'Index' and page['name'] != 'Страница не найдена'
+                            dcc.Link(html.Div(f"{page['name']}"), href=page["relative_path"], className='sidebar__btn_links text-body m-0 pt-3 pb-3') for page in dash.page_registry.values() if page['name'] != 'Index' and page['name'] != 'Страница не найдена'
                         ]),
                     ]),
 
@@ -100,7 +103,7 @@ def update_output_theme(value, state):
 )
 def update_output_theme_local(ts, value):
     if value == 'FLATLY':
-        return True
+        return True,
     else:
         return False
     

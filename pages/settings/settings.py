@@ -6,10 +6,6 @@ from datetime import date
 
 from utils.const import START_DATE
 
-dash.register_page(__name__, title="Информационная панель | Настройки",
-                   name="Настройки", path='/settings', order=4)
-
-
 layout = html.Div(style={'margin': '10px'}, children=[
     dbc.Row(className="mb-3", children=[
             html.P("Настройки информационной панели",
@@ -68,29 +64,4 @@ def update_output(ts, value):
 def update_local_output(value, state):
     if value:
         return str(value)
-
-
-# @callback(
-#     Output('current-theme-store', 'data'),
-#     Input(ThemeSwitchAIO.ids.switch('theme'), 'value'),
-#     State('current-theme-store', 'data')
-# )
-# def update_output_theme(value, state):
-#     if value:
-#         return str(NAME_THEME_LIGHT)
-#     else:
-#         return str(NAME_THEME_DARK)
-
-
-# @callback(
-#     Output(ThemeSwitchAIO.ids.switch('theme'), 'value'),
-#     Input('current-theme-store', 'modified_timestamp'),
-#     State('current-theme-store', 'data')
-# )
-# def update_output_theme_local(ts, value):
-#     if value == 'FLATLY':
-#         return True
-#     else:
-#         return False
-    
 

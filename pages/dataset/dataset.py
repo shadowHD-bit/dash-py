@@ -5,9 +5,6 @@ import pandas as pd
 
 from data import MAIN_DF, RETURNS_DF
 
-dash.register_page(__name__, title="Информационная панель | Датасет",
-                   name="Датасет", path='/dataset', order=5)
-
 df = MAIN_DF
 returns_df = RETURNS_DF
 
@@ -29,6 +26,7 @@ tab2_content = dbc.Row([
         'overflowX': 'scroll'
     })
 ])
+
 layout = html.Div([
     dbc.Row(style={'margin': '10px'}, children=[
         dbc.Row([

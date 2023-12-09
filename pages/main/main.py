@@ -13,9 +13,6 @@ from partials.statistic_card import build_statistic_card
 from partials.statistic_card_diff import build_statistic_card_diff
 from utils.const import CURRENT_DATE, DOMAIN, START_DATE
 
-dash.register_page(__name__, name="Главная",
-                   title="Информационная панель | Главная", path='/main', order=0)
-
 df = MAIN_DF
 
 
@@ -27,7 +24,7 @@ layout = html.Div(children=[
             dbc.Col(children=[
                 dbc.Row(children=[
                     html.P('Основные показатели',
-                           className='title_content__block text-info')
+                           className='title_content__block text-info', id='text-title')
                 ]
                 ),
                 dbc.Row(children=[
@@ -63,7 +60,7 @@ layout = html.Div(children=[
                     ], xs=12, md=4),
                     dbc.Row(children=[
                         html.P('Категории, подкатегории и товары',
-                               className='title_content__block text-info')
+                               className='title_content__block text-info', id='text-title')
                     ]
                     ),
                     dbc.Row(justify="around", children=[
@@ -126,12 +123,12 @@ layout = html.Div(children=[
                     ]),
                     dbc.Row(children=[
                         html.A('Перейти на страницу статистики товаров',
-                               className='text_link text-info', href=f"{DOMAIN}products")
+                               className='text_link text-info', href=f"{DOMAIN}products", id='text-link')
                     ]
                     ),
                     dbc.Row(children=[
                         html.P('География продаж',
-                               className='title_content__block text-info')
+                               className='title_content__block text-info', id='text-title')
                     ]
                     ),
                     dbc.Row(children=[
@@ -157,7 +154,7 @@ layout = html.Div(children=[
                     ),
                     dbc.Row(children=[
                         html.A('Перейти на страницу географии продаж',
-                               className='text_link text-info', href=f"{DOMAIN}geography")
+                               className='text_link text-info', href=f"{DOMAIN}geography", id='text-link')
                     ]
                     ),
                 ])

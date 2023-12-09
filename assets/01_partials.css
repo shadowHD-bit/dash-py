@@ -46,7 +46,6 @@
 /*------------------------- Sidebar -------------------------*/
 
 .sidebar__btn_links {
-    padding: 20px 0px !important;
     margin: 0px;
     text-decoration: none;
     transition: .3s ease all;

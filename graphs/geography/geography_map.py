@@ -13,5 +13,5 @@ def build_geography_map(candidate):
                                 labels={candidate: candidate}
                                 )
     fig_map.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
-    fig_map.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)',  geo = {'bgcolor': 'rgba(0, 0, 0, 0.0)',  'lakecolor': 'rgba(0, 0, 0, 0.0)'}, width=1500, height=600)
+    fig_map.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)',  geo = {'bgcolor': 'rgba(0, 0, 0, 0.0)',  'lakecolor': 'rgba(0, 0, 0, 0.0)'}, width=1400, height=600)
     return fig_map

@@ -12,9 +12,6 @@ from graphs.products.subcategory_top_hist import build_bar_top_subcategory
 from graphs.products.treemap_product import build_treemap_product
 from partials.statistic_card import build_statistic_card
 
-
-dash.register_page(__name__, name="Товары",
-                   title="Информационная панель | Товары", path='/products', order=2)
 df = MAIN_DF
 
 layout = html.Div([

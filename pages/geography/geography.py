@@ -7,9 +7,6 @@ from graphs.geography.geography_map import build_geography_map
 from partials.statistic_card import build_statistic_card
 
 
-dash.register_page(__name__, name="География", path='/geography', order=1)
-
-
 df = MAIN_DF
 region_list = df["Region"].unique()
 country_list = df["Country"].unique()
