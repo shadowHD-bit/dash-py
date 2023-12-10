@@ -8,7 +8,7 @@ from utils.const import CURRENT_DATE, START_DATE
 from dash_bootstrap_templates import ThemeSwitchAIO
 
 app = Dash(__name__, use_pages=True,  external_stylesheets=[
-           dbc.icons.BOOTSTRAP, dbc.themes.BOOTSTRAP])  # , suppress_callback_exceptions=True
+           dbc.icons.BOOTSTRAP, dbc.themes.BOOTSTRAP], suppress_callback_exceptions=True)
 
 register_pages()
 

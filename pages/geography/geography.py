@@ -1,9 +1,13 @@
-import dash
-from dash import html, dcc, callback, Output, Input
+'''
+Модуль страницы статистики по географии продаж. Модуль содержит разметку и внутренние обратные вызовы. Дополнительные функции отсуттсвуют.
+'''
+
 import plotly.express as px
 import dash_bootstrap_components as dbc
 from data import MAIN_DF
+from dash import html, dcc, callback, Output, Input
 from graphs.geography.geography_map import build_geography_map
+from partials.loader_params import build_loader_params
 from partials.statistic_card import build_statistic_card
 
 
@@ -13,56 +17,50 @@ country_list = df["Country"].unique()
 state_list = df["State"].unique()
 city_list = df["City"].unique()
 
-layout = html.Div([
-    dbc.Row(className="mt-2 mb-3", children=[
-            html.P('География продаж', className='title_content__block')
-            ]
-            ),
-    dbc.Row(className="mt-2 mb-3", children=[
-            html.P('Общая информация', className='subtitle_content__block')
-            ]
-            ),
-    dbc.Row(className="mt-2 mb-3", children=[
-            dbc.Col(children=[
-                build_statistic_card(
-                    'bi bi-globe-americas', 'Кол-во континентов', len(region_list), 'шт.')
-            ], lg=3, md=6, xs=12),
-            dbc.Col(children=[
-                build_statistic_card(
-                    'bi bi-airplane-engines-fill', 'Кол-во стран', len(country_list), 'шт.')
-            ], lg=3, md=6, xs=12),
-            dbc.Col(children=[
-                build_statistic_card(
-                    'bi bi-house', 'Кол-во штатов', len(state_list), 'шт.')
-            ], lg=3, md=6, xs=12),
-            dbc.Col(children=[
-                build_statistic_card(
-                    'bi bi-building', 'Кол-во городов', len(city_list), 'шт.')
-            ], lg=3, md=6, xs=12),
 
-            ]
-            ),
+layout = dbc.Container(fluid=True, children=[
+    dbc.Row(className="mt-3 mb-1", children=[
+        html.P('География продаж', className='title_content__block text-info')
+    ]),
+    dbc.Row(className="mt-1 mb-3", children=[
+        html.P('Общая информация', className='subtitle_content__block text-info')
+    ]),
+    dbc.Row(className="mt-2 mb-3", children=[
+        dbc.Col(children=[
+            build_statistic_card(
+                'bi bi-globe-americas', 'Кол-во континентов', len(region_list), 'шт.')
+        ], lg=3, md=6, xs=12),
+        dbc.Col(children=[
+            build_statistic_card(
+                'bi bi-airplane-engines-fill', 'Кол-во стран', len(country_list), 'шт.')
+        ], lg=3, md=6, xs=12),
+        dbc.Col(children=[
+            build_statistic_card(
+                'bi bi-house', 'Кол-во штатов', len(state_list), 'шт.')
+        ], lg=3, md=6, xs=12),
+        dbc.Col(children=[
+            build_statistic_card(
+                'bi bi-building', 'Кол-во городов', len(city_list), 'шт.')
+        ], lg=3, md=6, xs=12),
+    ]),
     dbc.Row(children=[
         dbc.Col(children=[
-            dbc.Card(outline=True ,color='light', className="p-0 shadow-sm m-0", children=[
+            dbc.Card(outline=True, color='light', className="p-0 shadow-sm m-0", children=[
                 dbc.CardHeader(children=[
-                    html.P("Географическая карта стран клиентов", className='subtitle_content__block'),
+                    html.P("Географическая карта стран клиентов",
+                           className='subtitle_content__block text-info'),
                     dbc.Col(children=[
-                            dcc.Dropdown(
-                                ["Sales", "Profit", "Quantity"],
-                                id="candidate",
-                                placeholder="Выберите параметр",
-                                value="Sales"
-                            )],
-                            xs=12, md=3),
-                ],
-                ),
+                        dcc.Dropdown(
+                            ["Sales", "Profit", "Quantity"],
+                            id="candidate",
+                            placeholder="Выберите параметр",
+                            value="Sales"
+                        )],
+                    xs=12, md=3),
+                ]),
                 dbc.CardBody(children=[
                     dbc.Row(
-                        dbc.Col(children=[
-                            dcc.Graph(
-                                id='map_graph',
-                            )
+                        dbc.Col(id="map_container", children=[
                         ])
                     )
                 ])
@@ -70,12 +68,12 @@ layout = html.Div([
         ], xs=12),
     ]),
     dbc.Row(className="mt-2 mb-3", children=[
-            html.H5('Статистика продаж по провинциям', className='subtitle_content__block mt-4')
-            ]
-            ),
+        html.P('Статистика продаж по провинциям',
+            className='subtitle_content__block mt-4 text-info')
+    ]),
     dbc.Row(children=[
         dbc.Col(children=[
-            dbc.Card(outline=True,color='light', className="p-0 shadow-sm m-0", children=[
+            dbc.Card(outline=True, color='light', className="p-0 shadow-sm m-0 mb-2", children=[
                 dbc.CardHeader(children=[
                     dbc.Row(children=[
                         dbc.Col(id="region_container", children=[
@@ -92,13 +90,12 @@ layout = html.Div([
                         dbc.Col(id="city_container", children=[
                         ], xs=12, md=6, lg=3),
                     ])
-                ]
-                ),
+                ]),
                 dbc.CardBody(children=[
                     dbc.Row(
                         dbc.Col(id="city_graphs", children=[
                             dbc.Row(id='main_graph_city', children=[
-
+                                build_loader_params()
                             ]),
                         ])
                     )
@@ -109,19 +106,26 @@ layout = html.Div([
 ])
 
 
+# Отображение графика карты
 @callback(
-    Output("map_graph", "figure"),
+    Output("map_container", "children"),
     Input("candidate", "value"))
-def display_choropleth(candidate):
-    fig = build_geography_map(candidate)
-    return fig
+def cb_display_choropleth(candidate):
+    if candidate:
+        fig = build_geography_map(candidate)
+        graph = dcc.Graph(id='map_graph', figure=fig)
+        return graph
+    else:
+        loading = build_loader_params()
+        return loading
 
 
+# Отображение выпадающего спискака выбора страны
 @callback(
     Output("country_container", "children"),
     Input("region_dropdown", "value"),
 )
-def display_country_dropown(n):
+def cb_display_country_dropown(n):
     if n:
         country_df = df.loc[df['Region'] == n]
         country_list = country_df['Country'].unique()
@@ -131,15 +135,16 @@ def display_country_dropown(n):
             placeholder="Выберите страну"
         ),
         return dropdown
-    else: 
-        return "" 
+    else:
+        return ""
 
 
+# Отображение выпадающего спискака выбора штата
 @callback(
     Output("state_container", "children"),
     Input("country_dropdown", "value"),
 )
-def display_state_dropown(n):
+def cb_display_state_dropown(n):
     if n:
         state_df = df.loc[df['Country'] == n]
         state_list = state_df['State'].unique()
@@ -149,15 +154,16 @@ def display_state_dropown(n):
             placeholder="Выберите штат"
         ),
         return dropdown
-    else: 
-        return "" 
+    else:
+        return ""
 
 
+# Отображение выпадающего спискака выбора города
 @callback(
     Output("city_container", "children"),
     Input("state_dropdown", "value"),
 )
-def display_city_dropown(n):
+def cb_display_city_dropown(n):
     if n:
         city_df = df.loc[df['State'] == n]
         city_list = city_df['City'].unique()
@@ -167,10 +173,11 @@ def display_city_dropown(n):
             placeholder="Выберите город"
         ),
         return dropdown
-    else: 
-        return "" 
+    else:
+        return ""
 
 
+# Отображение статистических графиков по выбранному городу
 @callback(
     Output("main_graph_city", "children"),
     [Input("city_dropdown", "value")]
@@ -272,13 +279,5 @@ def display_city_graph(city):
         ])
         return children
     else:
-        children = html.Div(className="d-flex justify-content-center aligh-items-center", children=[
-            dbc.Row(children=[
-                html.Img(src='assets/images/silky.png',
-                         className='non_city_data', width=200),
-            ]),
-            dbc.Row(children=[
-                html.P("Укажите город!")
-            ])
-        ])
+        children = build_loader_params()
         return children

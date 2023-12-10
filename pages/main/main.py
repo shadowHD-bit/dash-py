@@ -1,7 +1,4 @@
-import dash
-from dash import html, dcc, callback, Output, Input, State
 import dash_bootstrap_components as dbc
-import pandas as pd
 import datetime
 from data import MAIN_DF
 from graphs.geography.geography_map import build_geography_map
@@ -9,17 +6,16 @@ from graphs.products.pie_category_value import build_pie_category_value
 from graphs.products.pie_subcategory_value import build_pie_subcategory_value
 from graphs.products.treemap_product import build_treemap_product
 from partials.statistic_card import build_statistic_card
-
 from partials.statistic_card_diff import build_statistic_card_diff
-from utils.const import CURRENT_DATE, DOMAIN, START_DATE
+from utils.const import DOMAIN, START_DATE
+from dash import html, dcc, callback, Output, Input, State
+
 
 df = MAIN_DF
-
 
 layout = html.Div(children=[
     dcc.Store(id="current-time-store", storage_type='local'),
     dbc.Container(children=[
-        # dbc.Row(id='temp_row', children=[]),
         dbc.Row(class_name='mt-3 mb-2', children=[
             dbc.Col(children=[
                 dbc.Row(children=[
@@ -72,8 +68,7 @@ layout = html.Div(children=[
                                             dbc.Col(children=[
                                                 dcc.Graph(
                                                     id='graph',
-                                                    figure=build_pie_category_value(
-                                                        df)
+                                                    figure=build_pie_category_value(df)
                                                 )
                                             ])
                                         )
@@ -159,7 +154,6 @@ layout = html.Div(children=[
                     ),
                 ])
             ])
-
         ])
     ], fluid=True)
 ])
