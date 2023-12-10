@@ -8,7 +8,7 @@ def build_statistic_card(icon_class, title_text, body_text, designation):
     '''
     card = dbc.Card(outline=True, color='light', className='main_card shadow-sm', children=[
         dbc.CardBody(className='main_card__body', children=[
-            dbc.Row(children=[
+            dbc.Row(className='w-100 p-0', children=[
                 dbc.Col(className='main_card__icon_container', children=[
                     html.H4(
                         html.I(

@@ -1,6 +1,11 @@
+'''
+Модуль главной страницы дэшборда. Модуль содержит разметку страницы. Дополнитеьные функции отсутствуют.
+'''
+
+import calendar
 import dash_bootstrap_components as dbc
 import datetime
-from data import MAIN_DF
+from data import MAIN_DF, MERGED_DF
 from graphs.geography.geography_map import build_geography_map
 from graphs.products.pie_category_value import build_pie_category_value
 from graphs.products.pie_subcategory_value import build_pie_subcategory_value
@@ -12,6 +17,7 @@ from dash import html, dcc, callback, Output, Input, State
 
 
 df = MAIN_DF
+merge_df = MERGED_DF
 
 layout = html.Div(children=[
     dcc.Store(id="current-time-store", storage_type='local'),
@@ -28,7 +34,7 @@ layout = html.Div(children=[
                         dbc.Accordion(children=[
                             dbc.AccordionItem(
                                 [
-                                    dbc.Row(id="all_container_row", children=[])
+                                    dbc.Row(id="all_container_row", className='w-100 p-0', children=[])
                                 ],
                                 title="За все время",
                             ),
@@ -159,6 +165,7 @@ layout = html.Div(children=[
 ])
 
 
+# Вывод статистических карточек основных метрик
 @callback(
     [
         Output('all_container_row', 'children'),
@@ -168,79 +175,89 @@ layout = html.Div(children=[
     Input('current-time-store', 'modified_timestamp'),
     State('current-time-store', 'data')
 )
-def update_output_date_in_header(ts, value):
+def cd_update_stat_card(ts, value):
+    # Получение основного интервала времени
     if value:
         d = datetime.datetime.strptime(value, '%Y-%m-%d')
     else:
         d = datetime.datetime.strptime(START_DATE, '%Y-%m-%d')
 
+    # Получение последнего дня
+    last_day_current_month = calendar.monthrange(d.year, d.month)[1]
+    if d.month == 1:
+        last_day_previous_month = calendar.monthrange(d.year - 1, 12)[1]
+    else:
+        last_day_previous_month = calendar.monthrange(d.year, d.month - 1)[1]
+
+    # Рссчет суммы продаж, прибыли, количества продаж и количества заказов за все время
     sum_sales = df['Sales'].values.sum()
     sum_count = df['Quantity'].values.sum()
     sum_profit = df['Profit'].values.sum()
+    sum_orders = len(df)
+    sum_client = df['Customer ID'].nunique()
+    sum_ref = merge_df['Row ID'].nunique()
 
     start_date = str(datetime.date(d.year, 1, 1))
-    end_date = str(datetime.date(d.year, 12, 30))
+    end_date = str(datetime.date(d.year, d.month, d.day))
 
     start_month = str(datetime.date(d.year, d.month, 1))
-    end_month = str(datetime.date(d.year, d.month, 30))
+    end_month = str(datetime.date(d.year, d.month, last_day_current_month))
 
     prev_start_date = str(datetime.date(d.year-1, 1, 1))
     prev_end_date = str(datetime.date(d.year-1, 12, 30))
 
     prev_start_month = str(datetime.date(d.year, d.month-1, 1))
-    prev_end_month = str(datetime.date(d.year, d.month-1, 30))
+    prev_end_month = str(datetime.date(d.year, d.month-1, last_day_previous_month))
 
-    # Get Now data
-    df_sales_year = df[(df['Order Date'] >= start_date)
+    # Расчет основных метрик за текущий год
+    df_current_year = df[(df['Order Date'] >= start_date)
                        & (df['Order Date'] <= end_date)]
-    sum_sales_year = df_sales_year['Sales'].values.sum()
+    mergedf_current_year = merge_df[(merge_df['Order Date'] >= start_date)
+                       & (merge_df['Order Date'] <= end_date)]
+    sum_sales_year = df_current_year['Sales'].values.sum()
+    sum_profit_year = df_current_year['Profit'].values.sum()
+    sum_count_year = df_current_year['Quantity'].values.sum()
+    sum_orders_year = len(df_current_year)
+    sum_client_year = df_current_year['Customer ID'].nunique()
+    sum_ref_year = mergedf_current_year['Row ID'].nunique()
 
-    df_profit_year = df[(df['Order Date'] >= start_date)
-                        & (df['Order Date'] <= end_date)]
-    sum_profit_year = df_profit_year['Profit'].values.sum()
-
-    df_count_year = df[(df['Order Date'] >= start_date)
-                       & (df['Order Date'] <= end_date)]
-    sum_count_year = df_count_year['Quantity'].values.sum()
-
-    df_sales_month = df[(df['Order Date'] >= start_month)
+    # Расчет основных метрик за текущий месяц
+    df_current_month = df[(df['Order Date'] >= start_month)
                         & (df['Order Date'] <= end_month)]
-    sum_sales_month = df_sales_month['Sales'].values.sum()
+    mergedf_current_month = merge_df[(merge_df['Order Date'] >= start_month)
+                        & (merge_df['Order Date'] <= end_month)]
+    sum_sales_month = df_current_month['Sales'].values.sum()
+    sum_profit_month = df_current_month['Profit'].values.sum()
+    sum_count_month = df_current_month['Quantity'].values.sum()
+    sum_orders_month = len(df_current_month)
+    sum_client_month = df_current_month['Customer ID'].nunique()
+    sum_ref_month = mergedf_current_month['Row ID'].nunique()
 
-    df_profit_month = df[(df['Order Date'] >= start_month)
-                         & (df['Order Date'] <= end_month)]
-    sum_profit_month = df_profit_month['Profit'].values.sum()
-
-    df_count_month = df[(df['Order Date'] >= start_month)
-                        & (df['Order Date'] <= end_month)]
-    sum_count_month = df_count_month['Quantity'].values.sum()
-
-    # Get Prev data
-    prev_df_sales_year = df[(df['Order Date'] >= prev_start_date)
+    # Расчет основных метрик за предыдущий год
+    prev_df_year = df[(df['Order Date'] >= prev_start_date)
                             & (df['Order Date'] <= prev_end_date)]
-    prev_sum_sales_year = prev_df_sales_year['Sales'].values.sum()
+    prev_mergedf_year = merge_df[(merge_df['Order Date'] >= prev_start_date)
+                            & (merge_df['Order Date'] <= prev_end_date)]
+    prev_sum_sales_year = prev_df_year['Sales'].values.sum()
+    prev_sum_profit_year = prev_df_year['Profit'].values.sum()
+    prev_sum_count_year = prev_df_year['Quantity'].values.sum()
+    prev_sum_orders_year = len(prev_df_year)
+    prev_sum_client_year = prev_df_year['Customer ID'].nunique()
+    prev_sum_ref_year = prev_mergedf_year['Row ID'].nunique()
 
-    prev_df_profit_year = df[(df['Order Date'] >= prev_start_date)
-                             & (df['Order Date'] <= prev_end_date)]
-    prev_sum_profit_year = prev_df_profit_year['Profit'].values.sum()
-
-    prev_df_count_year = df[(df['Order Date'] >= prev_start_date)
-                            & (df['Order Date'] <= prev_end_date)]
-    prev_sum_count_year = prev_df_count_year['Quantity'].values.sum()
-
-    prev_df_sales_month = df[(df['Order Date'] >= prev_start_month)
+    # Расчет основных метрик за предыдущий месяц
+    prev_df_month = df[(df['Order Date'] >= prev_start_month)
                              & (df['Order Date'] <= prev_end_month)]
-    prev_sum_sales_month = prev_df_sales_month['Sales'].values.sum()
+    prev_mergedf_month = merge_df[(merge_df['Order Date'] >= prev_start_month)
+                             & (merge_df['Order Date'] <= prev_end_month)]
+    prev_sum_sales_month = prev_df_month['Sales'].values.sum()
+    prev_sum_profit_month = prev_df_month['Profit'].values.sum()
+    prev_sum_count_month = prev_df_month['Quantity'].values.sum()
+    prev_sum_orders_month = len(prev_df_month)
+    prev_sum_client_month = prev_df_month['Customer ID'].nunique()
+    prev_sum_ref_month = prev_mergedf_month['Row ID'].nunique()
 
-    prev_df_profit_month = df[(df['Order Date'] >= prev_start_month)
-                              & (df['Order Date'] <= prev_end_month)]
-    prev_sum_profit_month = prev_df_profit_month['Profit'].values.sum()
-
-    prev_df_count_month = df[(df['Order Date'] >= prev_start_month)
-                             & (df['Order Date'] <= prev_end_month)]
-    prev_sum_count_month = prev_df_count_month['Quantity'].values.sum()
-
-    # Get percentage
+    # Получение процентного соотношения для метрик текущего года
     if sum_sales_year > prev_sum_sales_year:
         percentage_sales_year = (
             sum_sales_year - prev_sum_sales_year)/sum_sales_year*100
@@ -262,6 +279,28 @@ def update_output_date_in_header(ts, value):
         percentage_count_year = -(prev_sum_count_year -
                                   sum_count_year)/prev_sum_count_year*100
 
+    if sum_orders_year > prev_sum_orders_year:
+        percentage_orders_year = (
+            sum_orders_year - prev_sum_orders_year)/sum_orders_year*100
+    else:
+        percentage_orders_year = -(prev_sum_orders_year -
+                                  sum_orders_year)/prev_sum_orders_year*100
+        
+    if sum_client_year > prev_sum_client_year:
+        percentage_client_year = (
+            sum_client_year - prev_sum_client_year)/sum_client_year*100
+    else:
+        percentage_client_year = -(prev_sum_client_year -
+                                  sum_client_year)/prev_sum_client_year*100
+        
+    if sum_ref_year > prev_sum_ref_year:
+        percentage_ref_year = (
+            sum_ref_year - prev_sum_ref_year)/sum_ref_year*100
+    else:
+        percentage_ref_year = -(prev_sum_ref_year -
+                                  sum_ref_year)/prev_sum_ref_year*100
+
+    # Получение процентного соотношения для метрик текущего месяца
     if sum_sales_month > prev_sum_sales_month:
         percentage_sales_month = (
             sum_sales_month - prev_sum_sales_month)/sum_sales_month*100
@@ -283,6 +322,29 @@ def update_output_date_in_header(ts, value):
         percentage_count_month = - \
             (prev_sum_count_month - sum_count_month)/prev_sum_count_month*100
 
+    if sum_orders_month > prev_sum_orders_month:
+        percentage_orders_month = (
+            sum_orders_month - prev_sum_orders_month)/sum_orders_month*100
+    else:
+        percentage_orders_month = - \
+            (prev_sum_orders_month - sum_orders_month)/prev_sum_orders_month*100
+        
+    if sum_client_month > prev_sum_client_month:
+        percentage_client_month = (
+            sum_client_month - prev_sum_client_month)/sum_client_month*100
+    else:
+        percentage_client_month = - \
+            (prev_sum_client_month - sum_client_month)/prev_sum_client_month*100
+        
+    if sum_ref_month > prev_sum_ref_month:
+        percentage_ref_month = (
+            sum_ref_month - prev_sum_ref_month)/sum_ref_month*100
+    else:
+        percentage_ref_month = - \
+            (prev_sum_ref_month - sum_ref_month)/prev_sum_ref_month*100
+
+
+
     all_container_children = dbc.Row(id="all_container", children=[
         dbc.Col(children=[
             build_statistic_card('bi bi-cash-stack',
@@ -296,36 +358,72 @@ def update_output_date_in_header(ts, value):
             build_statistic_card(
                 'bi bi-clipboard-data-fill', 'Объем', sum_count, 'шт.')
         ], xs=12),
+        dbc.Col(children=[
+            build_statistic_card(
+                'bi bi-bag-check', 'Кол-во продаж', sum_orders, 'шт.')
+        ], xs=12),
+        dbc.Col(children=[
+            build_statistic_card(
+                'bi bi-person-circle', 'Кол-во заказчиков', sum_client, 'чел.')
+        ], xs=12),
+        dbc.Col(children=[
+            build_statistic_card(
+                'bi bi-arrow-clockwise', 'Кол-во возвратов', sum_ref, 'шт.')
+        ], xs=12),
     ])
 
     year_container_children = dbc.Row(id="year_container", children=[
         dbc.Col(children=[
-                build_statistic_card_diff('bi bi-cash-stack', 'Прибыль', round(
-                    sum_profit_year, 2), '$', round(percentage_profit_year, 2))
-                ], xs=12),
+            build_statistic_card_diff('bi bi-cash-stack', 'Прибыль', round(
+                sum_profit_year, 2), '$', round(percentage_profit_year, 2), prev_sum_profit_year)
+            ], xs=12),
         dbc.Col(children=[
-                build_statistic_card_diff(
-                    'bi bi-bank', 'Продажи', round(sum_sales_year, 2), '$', round(percentage_sales_year, 2))
-                ], xs=12),
+            build_statistic_card_diff(
+                'bi bi-bank', 'Продажи', round(sum_sales_year, 2), '$', round(percentage_sales_year, 2), prev_sum_sales_year)
+            ], xs=12),
         dbc.Col(children=[
-                build_statistic_card_diff(
-                    'bi bi-clipboard-data-fill', 'Объем', sum_count_year, 'шт.', round(percentage_count_year, 2))
-                ], xs=12),
+            build_statistic_card_diff(
+                'bi bi-clipboard-data-fill', 'Объем', sum_count_year, 'шт.', round(percentage_count_year, 2), prev_sum_count_year)
+            ], xs=12),   
+        dbc.Col(children=[
+            build_statistic_card_diff(
+                'bi bi-bag-check', 'Кол-во продаж', sum_orders_year, 'шт.', round(percentage_orders_year, 2), prev_sum_orders_year)
+            ], xs=12),
+        dbc.Col(children=[
+            build_statistic_card_diff(
+                'bi bi-person-circle', 'Кол-во заказчиков', sum_client_year, 'чел.', round(percentage_client_year, 2), prev_sum_client_year)
+            ], xs=12),
+        dbc.Col(children=[
+            build_statistic_card_diff(
+                'bi bi-arrow-clockwise', 'Кол-во возвратов', sum_ref_year, 'шт.', round(percentage_ref_year, 2), prev_sum_ref_year)
+            ], xs=12),
     ]),
 
     month_container_children = dbc.Row(id="month_container", children=[
         dbc.Col(children=[
-                build_statistic_card_diff('bi bi-cash-stack', 'Прибыль', round(
-                    sum_profit_month, 2), '$', round(percentage_profit_month, 2))
-                ], xs=12),
+            build_statistic_card_diff('bi bi-cash-stack', 'Прибыль', round(
+                sum_profit_month, 2), '$', round(percentage_profit_month, 2), prev_sum_profit_month)
+            ], xs=12),
         dbc.Col(children=[
-                build_statistic_card_diff(
-                    'bi bi-bank', 'Продажи', round(sum_sales_month, 2), '$', round(percentage_sales_month, 2))
-                ], xs=12),
+            build_statistic_card_diff(
+                'bi bi-bank', 'Продажи', round(sum_sales_month, 2), '$', round(percentage_sales_month, 2), prev_sum_sales_month)
+            ], xs=12),
         dbc.Col(children=[
-                build_statistic_card_diff(
-                    'bi bi-clipboard-data-fill', 'Объем', sum_count_month, 'шт.', round(percentage_count_month, 2))
-                ], xs=12),
+            build_statistic_card_diff(
+                'bi bi-clipboard-data-fill', 'Объем', sum_count_month, 'шт.', round(percentage_count_month, 2), prev_sum_count_month)
+            ], xs=12),
+        dbc.Col(children=[
+            build_statistic_card_diff(
+                'bi bi-bag-check', 'Кол-во продаж', sum_orders_month, 'шт.', round(percentage_orders_month, 2), prev_sum_orders_month)
+            ], xs=12),
+        dbc.Col(children=[
+            build_statistic_card_diff(
+                'bi bi-person-circle', 'Кол-во заказчиков', sum_client_month, 'чел.', round(percentage_client_month, 2), prev_sum_client_month)
+            ], xs=12),
+        dbc.Col(children=[
+            build_statistic_card_diff(
+                'bi bi-arrow-clockwise', 'Кол-во возвратов', sum_ref_month, 'шт.', round(percentage_ref_month, 2), prev_sum_ref_month)
+            ], xs=12),
     ]),
 
     return all_container_children, year_container_children, month_container_children
