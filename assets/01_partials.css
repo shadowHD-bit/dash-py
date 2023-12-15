@@ -135,7 +135,7 @@
     margin: 10px 0px;
 }
 
-.accordion-body{
+.accordion-body .main_page{
     display: flex;
     justify-content: center;
 }
