@@ -29,14 +29,14 @@ tab2_content = dbc.Row([
 layout = html.Div([
     dbc.Row(style={'margin': '10px'}, children=[
         dbc.Row([
-            html.P("Основной датесет", className='text_title')
+            html.P("Основной датесет", className='text_title text-info')
         ]),
         dbc.Row([
             html.P("Из-за большого размера исходного датасета, на странице выводяться только первые 300 строк исходного файла XLSX. Чтобы ознакомиться с полным датасетом, нажмите кнопку 'Скачать'.", className='text'),
         ]),
         dbc.Row([
-            dbc.Button("Скачать", color="success", id="btn-download-dataset",
-                       className="me-1", style={'width': 'fit-content', 'margin': '5px 12px'}),
+            dbc.Button("Скачать", color="info", id="btn-download-dataset",
+                       className="me-1 mb-4", style={'width': 'fit-content', 'margin': '5px 12px'}),
             dcc.Download(id="download-dataset")
         ]),
         dbc.Tabs([
