@@ -2,13 +2,18 @@ import time
 import dash
 from dash import Dash, html, dcc, Output, Input, State
 import dash_bootstrap_components as dbc
+import diskcache
 from routes import register_pages
 from utils.UI.theme import URL_THEME_DARK, URL_THEME_LIGHT, NAME_THEME_DARK, NAME_THEME_LIGHT
 from utils.const import CURRENT_DATE, START_DATE
 from dash_bootstrap_templates import ThemeSwitchAIO
+from dash.long_callback import DiskcacheLongCallbackManager
+
+cache = diskcache.Cache("./cache")
+long_callback_manager = DiskcacheLongCallbackManager(cache)
 
 app = Dash(__name__, use_pages=True,  external_stylesheets=[
-           dbc.icons.BOOTSTRAP, dbc.themes.BOOTSTRAP], suppress_callback_exceptions=True)
+           dbc.icons.BOOTSTRAP, dbc.themes.BOOTSTRAP], suppress_callback_exceptions=True, long_callback_manager=long_callback_manager)
 
 register_pages()
 
@@ -16,15 +21,16 @@ app.layout = dbc.Container(id='main_container', children=[
     # Инициализация локального хранилища
     dcc.Store(id="current-time-store", data="",  storage_type='local'),
     dcc.Store(id="current-theme-store", data="",  storage_type='local'),
-    
+
     # Прелоадер страницы
     dcc.Loading(
-            id="loading-1",
-            type="cube",
-            parent_className = 'loader_parent',
-            parent_style = {'height': '100vh', 'weight': '100%', 'display': 'flex', 'alignItems': 'center', 'backgroundColor': '#fff', 'zIndex': 9, 'justifyContent': 'center'},
-            children=html.Div(id="loading-output-1")
-            ),
+        id="loading-1",
+        type="cube",
+        parent_className='loader_parent',
+        parent_style={'height': '100vh', 'weight': '100%', 'display': 'flex', 'alignItems': 'center',
+                      'backgroundColor': '#fff', 'zIndex': 9, 'justifyContent': 'center'},
+        children=html.Div(id="loading-output-1")
+    ),
 
     # Для получения url
     dcc.Location(id='uri', refresh=False),
@@ -53,7 +59,7 @@ app.layout = dbc.Container(id='main_container', children=[
                         dbc.Row(className="header m-0 shadow-sm", children=[
                             dbc.Row(children=[
                                 dbc.Col(children=[
-                                    dbc.Breadcrumb(id='breadcrumb', item_class_name ='text-info', style={
+                                    dbc.Breadcrumb(id='breadcrumb', item_class_name='text-info', style={
                                                    'textDecoration': 'none'},),
                                 ]),
                                 dbc.Col(children=[
@@ -127,6 +133,8 @@ def cb_update_theme_local(ts, value):
         return False
 
 # Получения имени текущей страницы для breadcrumb
+
+
 @app.callback(
     Output('breadcrumb', 'items'),
     Input('uri', 'href')
@@ -144,15 +152,18 @@ def cb_get_name_page(uri):
         ]
     else:
         items_breadcrumb = [
-            {"label": "Информационная панель", "href": "/", "external_link": True, "active": True},
+            {"label": "Информационная панель", "href": "/",
+                "external_link": True, "active": True},
         ]
     return items_breadcrumb
 
 # Инициализация прелоадера при загрузке страницы
+
+
 @app.callback(
-        [Output("loading-output-1", "children"),
-         Output("loading-1", "parent_className")], 
-        Input('uri', 'href'))
+    [Output("loading-output-1", "children"),
+     Output("loading-1", "parent_className")],
+    Input('uri', 'href'))
 def cb_triggers_spinner(value):
     time.sleep(5)
     return '', 'd-none'

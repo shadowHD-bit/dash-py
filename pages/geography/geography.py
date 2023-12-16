@@ -9,6 +9,7 @@ from dash import html, dcc, callback, Output, Input, State
 from graphs.geography.geography_map import build_geography_map
 from partials.loader_params import build_loader_params
 from partials.statistic_card import build_statistic_card
+from datetime import date
 
 
 df = MAIN_DF
@@ -18,8 +19,10 @@ state_list = df["State"].unique()
 city_list = df["City"].unique()
 
 
-def buld_children_stat(param, value_param):
+def buld_children_stat(param, value_param, start_date=date(2012, 1, 1), end_date=date(2015, 12, 30)):
     df_timelinef = df.loc[df[param] == value_param]
+    df_timelinef = df_timelinef[(df_timelinef['Order Date'] > str(start_date)) & (
+        df_timelinef['Order Date'] < str(end_date))]
     df_timeline = df_timelinef.sort_values(by="Order Date")
 
     fig_timeline_sales = px.line(df_timeline, x='Order Date', y="Sales")
@@ -45,7 +48,19 @@ def buld_children_stat(param, value_param):
     fig_bar_count = px.bar(df_timelinef, y="Category",
                            x="Quantity", color="Sub-Category", barmode="group")
 
-    children = dbc.Row(children=[
+    children = dbc.Row(id='stat_container_geo',children=[
+        dbc.Row(children=[
+            dbc.Col(children=[
+                dcc.DatePickerRange(
+                    id='picker_date_geo_stat',
+                    min_date_allowed=date(2012, 1, 1),
+                    max_date_allowed=date(2015, 12, 30),
+                    start_date=start_date,
+                    end_date=end_date,
+                    display_format='D/M/Y'
+                ),
+            ], xs=12, md=3, lg=3),
+        ]),
         dbc.Row(children=[
             dbc.Col(children=[
                 build_statistic_card(
@@ -154,7 +169,7 @@ layout = dbc.Container(fluid=True, children=[
                             placeholder="Выберите параметр",
                             value="Sales"
                         )],
-                        xs=12, md=3),
+                        xs=12, md=2),
                 ]),
                 dbc.CardBody(children=[
                     dbc.Row(
@@ -182,10 +197,28 @@ layout = dbc.Container(fluid=True, children=[
                             ),
                         ], xs=12, md=6, lg=3),
                         dbc.Col(id="country_container", children=[
+                            dcc.Dropdown(
+                                [],
+                                id="country_dropdown",
+                                className='d-none',
+                                placeholder="Выберите страну"
+                            ),
                         ], xs=12, md=6, lg=3),
                         dbc.Col(id="state_container", children=[
+                            dcc.Dropdown(
+                                [],
+                                id="state_dropdown",
+                                className='d-none',
+                                placeholder="Выберите страну"
+                            ),
                         ], xs=12, md=6, lg=3),
                         dbc.Col(id="city_container", children=[
+                            dcc.Dropdown(
+                                [],
+                                id="city_dropdown",
+                                className='d-none',
+                                placeholder="Выберите страну"
+                            ),
                         ], xs=12, md=6, lg=3),
                     ])
                 ]),
@@ -240,7 +273,7 @@ def cb_display_country_dropown(n):
         return dropdown, children, '', ''
     else:
         loading = build_loader_params()
-        return "", loading, '', ''
+        return '', loading , '', ''
 
 
 # Отображение выпадающего спискака выбора штата
@@ -307,3 +340,33 @@ def display_city_graph(city, state):
     else:
         children = buld_children_stat('State', state)
         return children
+
+
+@callback(
+    Output("main_graph_city", "children", allow_duplicate=True),    
+    [Input('picker_date_geo_stat', 'start_date'),
+    Input('picker_date_geo_stat', 'end_date')],
+    [State("region_dropdown", "value"),
+     State("country_dropdown", "value"),
+     State("state_dropdown", "value"),
+     State("city_dropdown", "value")],
+    prevent_initial_call=True
+)
+def cb_change_date(start_date, end_date, region, country, state, city):
+    if city:
+        children = buld_children_stat('City', city, start_date=start_date, end_date=end_date)
+        return children
+    elif state:
+        children = buld_children_stat('State', state, start_date=start_date, end_date=end_date)
+        return children
+    elif country:
+        children = buld_children_stat('Country', country, start_date=start_date, end_date=end_date)
+        return children
+    elif region:
+        children = buld_children_stat('Region', region, start_date=start_date, end_date=end_date)
+        return children
+    else:
+        loading = build_loader_params()
+        return loading
+
+

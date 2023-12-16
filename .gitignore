@@ -7,3 +7,6 @@ venv
 # Изображения и гив файлы
 assets/images
 assets/gif
+
+# Кэш
+cache
