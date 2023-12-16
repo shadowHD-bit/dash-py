@@ -16,14 +16,14 @@ df = MAIN_DF
 
 layout = html.Div([
     dbc.Row(className="mt-2 mb-3", children=[
-        html.P('Общая информация', className='title_content__block')
+        html.P('Общая информация', className='title_content__block text-info')
     ]
     ),
     dbc.Row(children=[
         dbc.Col(children=[
             dbc.Card(outline=True, className="p-0 m-2", children=[
                 dbc.CardHeader(children=[
-                    html.P("Топ категорий", className='subtitle_content__block'),
+                    html.P("Топ категорий", className='subtitle_content__block text-info'),
                     dbc.Row(children=[
                         dbc.Col(children=[
                             dcc.Dropdown(
@@ -57,7 +57,7 @@ layout = html.Div([
             dbc.Card(outline=True, className="p-0 m-2", children=[
                 dbc.CardHeader(children=[
                     html.P("Топ-10 под-категорий",
-                           className='subtitle_content__block'),
+                           className='subtitle_content__block text-info'),
                     dbc.Row(children=[
                         dbc.Col(children=[
                             dcc.Dropdown(
@@ -91,7 +91,7 @@ layout = html.Div([
         dbc.Col(children=[
             dbc.Card(outline=True, className="p-0 m-2", children=[
                 dbc.CardHeader(children=[
-                    html.P("Топ-10 товаров", className='subtitle_content__block'),
+                    html.P("Топ-10 товаров", className='subtitle_content__block text-info'),
                     dbc.Row(children=[
                         dbc.Col(children=[
                             dcc.Dropdown(
@@ -126,7 +126,7 @@ layout = html.Div([
             dbc.Card(outline=True, className="p-0 m-2", children=[
                 dbc.CardHeader(children=[
                     html.P("Иерархическая карта товаров",
-                           className='subtitle_content__block'),
+                           className='subtitle_content__block text-info'),
                     dbc.Col(children=[
                         dcc.Dropdown(
                             ['Category', 'Sub-Category', 'Product Name'],
@@ -146,7 +146,7 @@ layout = html.Div([
     ]),
     dbc.Row(children=[
         html.P('Статистика по товару, категории и подкатегории',
-               className='title_content__block')
+               className='title_content__block text-info')
     ]),
     dbc.Row(children=[
         dbc.Accordion(children=[

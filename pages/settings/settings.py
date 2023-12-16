@@ -9,13 +9,13 @@ from utils.const import START_DATE
 layout = html.Div(style={'margin': '10px'}, children=[
     dbc.Row(className="mb-3", children=[
             html.P("Настройки информационной панели",
-                   className='title_content__block')
+                   className='title_content__block text-info')
             ]),
     dbc.Row(className='mb-3', children=[
             dbc.Col(children=[
                 dbc.Row(className="mb-3", children=[
                     html.P("Изменение текущей даты",
-                           className='subtitle_content__block')
+                           className='subtitle_content__block text-info')
                 ]),
                 dbc.Row(className="mb-3", children=[
                     html.P("Функция смены текущей даты дэшборда позволяет пользователям отображать данные за определенный период времени, например, за прошлый месяц, текущий год или любой другой выбранный промежуток времени. Это удобно для анализа и сравнения данных в разные временные периоды, а также для отслеживания динамики изменений в различных параметрах. ",
