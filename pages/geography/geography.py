@@ -48,6 +48,10 @@ def buld_children_stat(param, value_param, start_date=date(2012, 1, 1), end_date
     fig_bar_count = px.bar(df_timelinef, y="Category",
                            x="Quantity", color="Sub-Category", barmode="group")
 
+    fig_cyc_sales = px.pie(df_timelinef, values='Sales', names='Sub-Category')
+    fig_cyc_profit = px.pie(df_timelinef, values='Profit', names='Sub-Category')
+    fig_cyc_count = px.pie(df_timelinef, values='Quantity', names='Sub-Category')
+
     children = dbc.Row(id='stat_container_geo',children=[
         dbc.Row(children=[
             dbc.Col(children=[
@@ -123,6 +127,31 @@ def buld_children_stat(param, value_param, start_date=date(2012, 1, 1), end_date
                     dbc.CardBody(className='main_card__body', children=[
                         dcc.Graph(id='graph_city',
                                   figure=fig_bar_count)
+                    ])
+                ])
+            ], lg=4, md=6, xs=12),]),
+        dbc.Row(children=[
+            dbc.Col(children=[
+                dbc.Card(color="light", outline=True, className='main_card shadow-sm mt-2', children=[
+                    dbc.CardBody(className='main_card__body', children=[
+                        dcc.Graph(id='graph_city',
+                                  figure=fig_cyc_profit)
+                    ])
+                ])
+            ], lg=4, md=6, xs=12),
+            dbc.Col(children=[
+                dbc.Card(color="light", outline=True, className='main_card shadow-sm mt-2', children=[
+                    dbc.CardBody(className='main_card__body', children=[
+                        dcc.Graph(id='graph_city',
+                                  figure=fig_cyc_sales)
+                    ])
+                ])
+            ], lg=4, md=6, xs=12),
+            dbc.Col(children=[
+                dbc.Card(color="light", outline=True, className='main_card shadow-sm mt-2', children=[
+                    dbc.CardBody(className='main_card__body', children=[
+                        dcc.Graph(id='graph_city',
+                                  figure=fig_cyc_count)
                     ])
                 ])
             ], lg=4, md=6, xs=12),]),
