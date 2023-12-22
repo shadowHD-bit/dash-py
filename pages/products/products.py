@@ -1,16 +1,13 @@
-from datetime import date
-import dash
-from dash import html, dcc, callback, Output, Input, State
 import dash_bootstrap_components as dbc
 import plotly.express as px
-
-
+from dash import html, dcc, callback, Output, Input
 from data import MAIN_DF
 from graphs.products.category_top_hist import build_bar_top_category
 from graphs.products.product_top_hist import build_bar_top_product
 from graphs.products.subcategory_top_hist import build_bar_top_subcategory
 from graphs.products.treemap_product import build_treemap_product
 from partials.statistic_card import build_statistic_card
+from datetime import date
 
 df = MAIN_DF
 
@@ -23,7 +20,8 @@ layout = html.Div([
         dbc.Col(children=[
             dbc.Card(outline=True, className="p-0 m-2", children=[
                 dbc.CardHeader(children=[
-                    html.P("Топ категорий", className='subtitle_content__block text-info'),
+                    html.P("Топ категорий",
+                           className='subtitle_content__block text-info'),
                     dbc.Row(children=[
                         dbc.Col(children=[
                             dcc.Dropdown(
@@ -91,7 +89,8 @@ layout = html.Div([
         dbc.Col(children=[
             dbc.Card(outline=True, className="p-0 m-2", children=[
                 dbc.CardHeader(children=[
-                    html.P("Топ-10 товаров", className='subtitle_content__block text-info'),
+                    html.P("Топ-10 товаров",
+                           className='subtitle_content__block text-info'),
                     dbc.Row(children=[
                         dbc.Col(children=[
                             dcc.Dropdown(
@@ -286,10 +285,11 @@ def display_category_callback(n, start_date, end_date):
         df_timeline_sub = cat_df_date.sort_values(by="Order Date")
 
         fig_value_subcategories_pie = px.pie(
-        cat_df_date, values='Sales', names='Sub-Category')
+            cat_df_date, values='Sales', names='Sub-Category')
         fig_value_subcategories_pie.update_traces(
             textposition='inside', textinfo='percent+label')
-        fig_value_subcategories_pie.update_layout(margin=dict(t=0, l=0, r=0, b=0))
+        fig_value_subcategories_pie.update_layout(
+            margin=dict(t=0, l=0, r=0, b=0))
 
         fig_timeline_sub_sales = px.line(
             df_timeline_sub, x='Order Date', y="Sales")
@@ -302,11 +302,12 @@ def display_category_callback(n, start_date, end_date):
             margin={"r": 15, "t": 15, "l": 15, "b": 15})
 
         fig_value_subcategories_pie_count = px.pie(
-        cat_df_date, values='Quantity', names='Sub-Category')
+            cat_df_date, values='Quantity', names='Sub-Category')
         fig_value_subcategories_pie_count.update_traces(
             textposition='inside', textinfo='percent+label')
-        fig_value_subcategories_pie_count.update_layout(margin=dict(t=0, l=0, r=0, b=0))
- 
+        fig_value_subcategories_pie_count.update_layout(
+            margin=dict(t=0, l=0, r=0, b=0))
+
         fig_timeline_sub_count = px.line(
             df_timeline_sub, x='Order Date', y="Quantity")
         fig_timeline_sub_count.update_layout(
@@ -330,7 +331,7 @@ def display_category_callback(n, start_date, end_date):
             dbc.Row(children=[
                     html.P('Продажи',
                            className='subtitle_content__block')
-            ]),
+                    ]),
             dbc.Row(className='mt-3', children=[
                 dbc.Col(children=[
                     dcc.Graph(
@@ -346,7 +347,7 @@ def display_category_callback(n, start_date, end_date):
             dbc.Row(children=[
                     html.P('Прибыль',
                            className='subtitle_content__block')
-            ]),
+                    ]),
             dbc.Row(className='mt-3', children=[
                 dbc.Col(children=[
                     dcc.Graph(
@@ -357,7 +358,7 @@ def display_category_callback(n, start_date, end_date):
             dbc.Row(children=[
                     html.P('Объем',
                            className='subtitle_content__block')
-            ]),
+                    ]),
             dbc.Row(className='mt-3', children=[
                 dbc.Col(children=[
                     dcc.Graph(
@@ -382,7 +383,7 @@ def display_category_callback(n, start_date, end_date):
      Output("sub_dropdown", "options")],
     Input("candidate_category", "value"),
 )
-def display_subcategory_dropown_callback(n):
+def cb_display_subcategory_dropown_callback(n):
     if n:
         sub_df = df.loc[df['Category'] == n]
         sub_list = sub_df['Sub-Category'].unique()
@@ -397,8 +398,7 @@ def display_subcategory_dropown_callback(n):
      Input('picker_date_sub', 'start_date'),
      Input('picker_date_sub', 'end_date')]
 )
-def display_subcategory_callback(n, start_date, end_date):
-
+def cb_display_subcategory_callback(n, start_date, end_date):
     if n:
         sub_df = df.loc[df['Sub-Category'] == n]
         sub_df_date = sub_df[(sub_df['Order Date'] > str(start_date)) & (
@@ -504,7 +504,7 @@ def display_subcategory_callback(n, start_date, end_date):
     Output("container_treemap", "children"),
     [Input("get_params_treemap", "value")]
 )
-def build_treemap_callback(value):
+def cb_build_treemap_callback(value):
     treemap_graph = build_treemap_product(df, value)
     treemap = dcc.Graph(
         id='treemap-graph',
@@ -520,7 +520,7 @@ def build_treemap_callback(value):
      Input('picker_date_top_category', 'start_date'),
      Input('picker_date_top_category', 'end_date')]
 )
-def build_category_top_hist_callback(value, start_date, end_date):
+def cb_build_category_top_hist_callback(value, start_date, end_date):
     graph = build_bar_top_category(df, 'Category', value, start_date, end_date)
     graph_container = dcc.Graph(
         id='top_category_bar',
@@ -536,7 +536,7 @@ def build_category_top_hist_callback(value, start_date, end_date):
      Input('picker_date_top_subcategory', 'start_date'),
      Input('picker_date_top_subcategory', 'end_date')]
 )
-def build_subcategory_top_hist_callback(value, start_date, end_date):
+def cb_build_subcategory_top_hist_callback(value, start_date, end_date):
     graph = build_bar_top_subcategory(
         df, 'Sub-Category', value, start_date, end_date)
     graph_container = dcc.Graph(
@@ -553,7 +553,7 @@ def build_subcategory_top_hist_callback(value, start_date, end_date):
      Input('picker_date_top_product', 'start_date'),
      Input('picker_date_top_product', 'end_date')]
 )
-def build_product_top_hist_callback(value, start_date, end_date):
+def cb_build_product_top_hist_callback(value, start_date, end_date):
     graph = build_bar_top_product(
         df, 'Product Name', value, start_date, end_date)
     graph_container = dcc.Graph(
@@ -564,16 +564,12 @@ def build_product_top_hist_callback(value, start_date, end_date):
     return graph_container
 
 
-
-
-
-
 @callback(
     [Output("sub_product_dropdown", "className"),
      Output("sub_product_dropdown", "options")],
     Input("candidate_product_category", "value"),
 )
-def display_subcategory_dropown_callback(n):
+def cb_display_subcategory_dropown_callback(n):
     if n:
         sub_df = df.loc[df['Category'] == n]
         sub_list = sub_df['Sub-Category'].unique()
@@ -586,9 +582,9 @@ def display_subcategory_dropown_callback(n):
     [Output("product_dropdown", "className"),
      Output("product_dropdown", "options")],
     [Input("sub_product_dropdown", "value"),
-    Input("candidate_product_category", "value")]
+     Input("candidate_product_category", "value")]
 )
-def display_subcategory_dropown_callback(n, n_pred):
+def cb_display_subcategory_dropown_callback(n, n_pred):
     if n and n_pred:
         sub_df = df.loc[df['Sub-Category'] == n]
         sub_list = sub_df['Product Name'].unique()
@@ -600,10 +596,10 @@ def display_subcategory_dropown_callback(n, n_pred):
 @callback(
     Output("product_containet__content", "children"),
     [Input("product_dropdown", "value"),
-    Input('picker_date_product_stat', 'start_date'),
-    Input('picker_date_product_stat', 'end_date')]
+     Input('picker_date_product_stat', 'start_date'),
+     Input('picker_date_product_stat', 'end_date')]
 )
-def display_subcategory_dropown_callback(n, start_date, end_date):
+def cb_display_subcategory_dropown_callback(n, start_date, end_date):
     if n:
         prod_df = df.loc[df['Product Name'] == n]
         prod_df_date = prod_df[(prod_df['Order Date'] > str(start_date)) & (
@@ -613,7 +609,6 @@ def display_subcategory_dropown_callback(n, start_date, end_date):
         sum_count_prod = prod_df_date['Quantity'].values.sum()
 
         df_timeline_prod = prod_df_date.sort_values(by="Order Date")
-
 
         fig_timeline_prod_sales = px.line(
             df_timeline_prod, x='Order Date', y="Sales")
@@ -629,7 +624,6 @@ def display_subcategory_dropown_callback(n, start_date, end_date):
             df_timeline_prod, x='Order Date', y="Quantity")
         fig_timeline_prod_count.update_layout(
             margin={"r": 15, "t": 15, "l": 15, "b": 15})
-
 
         children = html.Div(children=[
             dbc.Row(children=[
