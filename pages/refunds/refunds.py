@@ -17,7 +17,7 @@ list_prod = merged_df['Product Name'].value_counts()
 
 layout = html.Div([
     dbc.Row(className="mt-2 mb-3", children=[
-        html.P('Общая информация', className='title_content__block')
+        html.P('Общая информация', className='title_content__block text-info')
     ]),
     dbc.Row(children=[
         dbc.Col(children=[
@@ -85,6 +85,12 @@ layout = html.Div([
                                 )
                             ], xs=3),
                             dbc.Col(id='dropdown_sub_ref', children=[
+                                dcc.Dropdown(
+                                    [],
+                                    id="sub_product_dropdown_ref",
+                                    placeholder="Выберите подкатегорию",
+                                    className='d-none'
+                                ),
                             ], xs=3)
                         ]),
                         dbc.Row(
@@ -98,7 +104,7 @@ layout = html.Div([
         ], xs=12),
     ]),
     dbc.Row(className="mt-2 mb-3", children=[
-        html.P('Список возвратов', className='title_content__block')
+        html.P('Список возвратов', className='title_content__block text-info')
     ]),
     dbc.Row(className='mb-3', children=[
         dbc.Col(children=[
@@ -120,6 +126,12 @@ layout = html.Div([
             )
         ], xs=3),
         dbc.Col(id='container_dropdown_sub', children=[
+            dcc.Dropdown(
+                [],
+                id="picker_sub_ref",
+                placeholder="Выберите подкатегорию",
+                className='d-none'
+            ),
         ], xs=3),
     ]),
     dbc.Row(id='list_ref', children=[
@@ -129,18 +141,17 @@ layout = html.Div([
 
 
 @callback(
-    Output("container_dropdown_sub", "children"),
+    [Output("picker_sub_ref", "className"),
+     Output("picker_sub_ref", "options")],
     Input("picker_cat_ref", "value"),
 )
 def display_subcategory_dropown_call(n):
-    sub_df = merged_df.loc[merged_df['Category'] == n]
-    sub_list = sub_df['Sub-Category'].unique()
-    dropdown = dcc.Dropdown(
-        sub_list,
-        id="picker_sub_ref",
-        placeholder="Выберите подкатегорию"
-    ),
-    return dropdown
+    if n:
+        sub_df = merged_df.loc[merged_df['Category'] == n]
+        sub_list = sub_df['Sub-Category'].unique()
+        return '', sub_list
+    else:
+        return 'd-none', []
 
 
 @callback(
@@ -156,24 +167,6 @@ def display_subcategory_dropown_callback(n, start_date, end_date):
             merged_df['Order Date'] < str(end_date))]
         df_ref = list_df.loc[:, ['Order ID', 'Order Date',
                                  'Product ID', 'Product Name', 'Region_x']]
-
-        # columnDefs = [
-        #     {"field": "Order ID"},
-        #     {"field": "Order Date"},
-        #     {"field": "Product ID"},
-        #     {"field": "Product Name"},
-        #     {"field": "Region_x"},
-        # ]
-
-        # list_ = dag.AgGrid(
-        #     id="enable-pagination",
-        #     columnDefs=columnDefs,
-        #     rowData=list_df,
-        #     columnSize="sizeToFit",
-        #     defaultColDef={"resizable": True, "sortable": True, "filter": True},
-        #     dashGridOptions={"pagination": True},
-        # ),
-
         list_ = dash_table.DataTable(df_ref.to_dict('records'),
                                      [{"name": i, "id": i}
                                          for i in df_ref.columns],
@@ -210,23 +203,22 @@ def display_graph_region_callback(start_date, end_date):
 
 
 @callback(
-    Output("dropdown_sub_ref", "children"),
+    [Output("sub_product_dropdown_ref", "className"),
+     Output("sub_product_dropdown_ref", "options")],
     Input("candidate_product_ref", "value"),
 )
 def display_subcategory_dropown_callback(n):
-    sub_df = merged_df.loc[merged_df['Category'] == n]
-    sub_list = sub_df['Sub-Category'].unique()
-    dropdown = dcc.Dropdown(
-        sub_list,
-        id="sub_product_dropdown",
-        placeholder="Выберите подкатегорию"
-    ),
-    return dropdown
+    if n:
+        sub_df = merged_df.loc[merged_df['Category'] == n]
+        sub_list = sub_df['Sub-Category'].unique()
+        return '', sub_list
+    else:
+        return 'd-none', []
 
 
 @callback(
     Output("prod_graph__container", "children"),
-    [Input("sub_product_dropdown", "value"),
+    [Input("sub_product_dropdown_ref", "value"),
      Input('picker_date_prod', 'start_date'),
      Input('picker_date_prod', 'end_date')]
 )
