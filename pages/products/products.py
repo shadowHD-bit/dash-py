@@ -1,6 +1,6 @@
 from datetime import date
 import dash
-from dash import html, dcc, callback, Output, Input
+from dash import html, dcc, callback, Output, Input, State
 import dash_bootstrap_components as dbc
 import plotly.express as px
 
@@ -172,8 +172,20 @@ layout = html.Div([
                             )
                         ], xs=3),
                         dbc.Col(id="subcat_product_container", children=[
+                            dcc.Dropdown(
+                                [],
+                                id="sub_product_dropdown",
+                                placeholder="Выберите подкатегорию",
+                                className='d-none'
+                            ),
                         ], xs=3),
                         dbc.Col(id="product_container_dropdown", children=[
+                            dcc.Dropdown(
+                                [],
+                                id="product_dropdown",
+                                placeholder="Выберите товар",
+                                className='d-none'
+                            ),
                         ], xs=3),
                     ]),
                     dbc.Row(id='product_containet__content', children=[
@@ -236,6 +248,12 @@ layout = html.Div([
                             )
                         ], xs=3),
                         dbc.Col(id="subcat_container", children=[
+                            dcc.Dropdown(
+                                [],
+                                id="sub_dropdown",
+                                placeholder="Выберите подкатегорию",
+                                className='d-none'
+                            ),
                         ], xs=3),
                     ]),
                     dbc.Row(
@@ -360,18 +378,17 @@ def display_category_callback(n, start_date, end_date):
 
 
 @callback(
-    Output("subcat_container", "children"),
+    [Output("sub_dropdown", "className"),
+     Output("sub_dropdown", "options")],
     Input("candidate_category", "value"),
 )
 def display_subcategory_dropown_callback(n):
-    sub_df = df.loc[df['Category'] == n]
-    sub_list = sub_df['Sub-Category'].unique()
-    dropdown = dcc.Dropdown(
-        sub_list,
-        id="sub_dropdown",
-        placeholder="Выберите подкатегорию"
-    ),
-    return dropdown
+    if n:
+        sub_df = df.loc[df['Category'] == n]
+        sub_list = sub_df['Sub-Category'].unique()
+        return '', sub_list
+    else:
+        return 'd-none', []
 
 
 @callback(
@@ -547,34 +564,37 @@ def build_product_top_hist_callback(value, start_date, end_date):
     return graph_container
 
 
+
+
+
+
 @callback(
-    Output("subcat_product_container", "children"),
+    [Output("sub_product_dropdown", "className"),
+     Output("sub_product_dropdown", "options")],
     Input("candidate_product_category", "value"),
 )
 def display_subcategory_dropown_callback(n):
-    sub_df = df.loc[df['Category'] == n]
-    sub_list = sub_df['Sub-Category'].unique()
-    dropdown = dcc.Dropdown(
-        sub_list,
-        id="sub_product_dropdown",
-        placeholder="Выберите подкатегорию"
-    ),
-    return dropdown
+    if n:
+        sub_df = df.loc[df['Category'] == n]
+        sub_list = sub_df['Sub-Category'].unique()
+        return '', sub_list
+    else:
+        return 'd-none', []
 
 
 @callback(
-    Output("product_container_dropdown", "children"),
-    Input("sub_product_dropdown", "value"),
+    [Output("product_dropdown", "className"),
+     Output("product_dropdown", "options")],
+    [Input("sub_product_dropdown", "value"),
+    Input("candidate_product_category", "value")]
 )
-def display_subcategory_dropown_callback(n):
-    sub_df = df.loc[df['Sub-Category'] == n]
-    sub_list = sub_df['Product Name'].unique()
-    dropdown = dcc.Dropdown(
-        sub_list,
-        id="product_dropdown",
-        placeholder="Выберите товар"
-    ),
-    return dropdown
+def display_subcategory_dropown_callback(n, n_pred):
+    if n and n_pred:
+        sub_df = df.loc[df['Sub-Category'] == n]
+        sub_list = sub_df['Product Name'].unique()
+        return '', sub_list
+    else:
+        return 'd-none', []
 
 
 @callback(
