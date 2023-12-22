@@ -12,7 +12,7 @@ return_df = RETURNS_DF
 main_df = MAIN_DF
 merged_df = pd.merge(return_df, main_df, on='Order ID')
 
-list_region = RETURNS_DF['Region'].value_counts()
+list_region = merged_df['Region_x'].value_counts()
 list_prod = merged_df['Product Name'].value_counts()
 
 layout = html.Div([
