@@ -10,3 +10,5 @@ assets/gif
 
 # Кэш
 cache
+*.pyc
+*/__pycache__
