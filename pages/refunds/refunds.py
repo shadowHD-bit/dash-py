@@ -134,7 +134,7 @@ layout = html.Div([
             ),
         ], xs=3),
     ]),
-    dbc.Row(id='list_ref', children=[
+    dbc.Row(id='list_ref', className='p-3', children=[
 
     ]),
 ])
@@ -167,13 +167,9 @@ def display_subcategory_dropown_callback(n, start_date, end_date):
             merged_df['Order Date'] < str(end_date))]
         df_ref = list_df.loc[:, ['Order ID', 'Order Date',
                                  'Product ID', 'Product Name', 'Region_x']]
-        list_ = dash_table.DataTable(df_ref.to_dict('records'),
-                                     [{"name": i, "id": i}
-                                         for i in df_ref.columns],
-                                     page_size=30,
-                                     style_table={
-            'overflowX': 'scroll'
-        })
+        list_ = dbc.Table.from_dataframe(
+            df_ref, striped=True, bordered=True, hover=True, index=True
+        )
 
         return list_
     else:
