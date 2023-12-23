@@ -153,3 +153,12 @@ html {
     width: 400px;
     margin-top: 60px;
 }
+
+.Select-value-label {
+    color: #0077b6;
+}
+
+
+.VirtualizedSelectOption {
+    color: #0077b6;
+ }
