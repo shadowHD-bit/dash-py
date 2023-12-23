@@ -14,4 +14,5 @@ def build_geography_map(candidate):
                                 )
     fig_map.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
     fig_map.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)',  geo = {'bgcolor': 'rgba(0, 0, 0, 0.0)',  'lakecolor': 'rgba(0, 0, 0, 0.0)'}, width=1400, height=600)
+    fig_map.update_layout(legend=dict(font=dict(color="#0077b6")))
     return fig_map

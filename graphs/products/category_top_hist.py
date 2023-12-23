@@ -6,4 +6,5 @@ def build_bar_top_category(df, x_param, y_param, start_date, end_date):
     list_sort = list.sort_values(y_param, ascending=True)
     fig = px.bar(list_sort, x=y_param, y=x_param)
     fig.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
+    fig.update_layout(legend=dict(font=dict(color="#0077b6")))
     return fig
