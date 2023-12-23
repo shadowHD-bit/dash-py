@@ -6,5 +6,6 @@ def build_treemap_product(df, params):
     fig_treemap = px.treemap(df, path=all_list, values='Sales')
     fig_treemap.update_layout(margin = dict(t=0, l=0, r=0, b=0))
     fig_treemap.update_traces(root_color="lightgrey")
+    fig_treemap.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
 
     return fig_treemap

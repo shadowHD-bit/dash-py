@@ -286,20 +286,24 @@ def display_category_callback(n, start_date, end_date):
 
         fig_value_subcategories_pie = px.pie(
             cat_df_date, values='Sales', names='Sub-Category')
+        fig_value_subcategories_pie.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
         fig_value_subcategories_pie.update_traces(
             textposition='inside', textinfo='percent+label')
         fig_value_subcategories_pie.update_layout(
             margin=dict(t=0, l=0, r=0, b=0))
 
+
         fig_timeline_sub_sales = px.line(
             df_timeline_sub, x='Order Date', y="Sales")
         fig_timeline_sub_sales.update_layout(
             margin={"r": 15, "t": 15, "l": 15, "b": 15})
+        fig_timeline_sub_sales.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
 
         fig_timeline_sub_profit = px.line(
             df_timeline_sub, x='Order Date', y="Profit")
         fig_timeline_sub_profit.update_layout(
             margin={"r": 15, "t": 15, "l": 15, "b": 15})
+        fig_timeline_sub_profit.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
 
         fig_value_subcategories_pie_count = px.pie(
             cat_df_date, values='Quantity', names='Sub-Category')
@@ -307,11 +311,13 @@ def display_category_callback(n, start_date, end_date):
             textposition='inside', textinfo='percent+label')
         fig_value_subcategories_pie_count.update_layout(
             margin=dict(t=0, l=0, r=0, b=0))
+        fig_value_subcategories_pie_count.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
 
         fig_timeline_sub_count = px.line(
             df_timeline_sub, x='Order Date', y="Quantity")
         fig_timeline_sub_count.update_layout(
             margin={"r": 15, "t": 15, "l": 15, "b": 15})
+        fig_timeline_sub_count.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
 
         children = html.Div(children=[
             dbc.Row(children=[
@@ -413,31 +419,37 @@ def cb_display_subcategory_callback(n, start_date, end_date):
             df_timeline_sub, x='Order Date', y="Sales")
         fig_timeline_sub_sales.update_layout(
             margin={"r": 15, "t": 15, "l": 15, "b": 15})
+        fig_timeline_sub_sales.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
 
         fig_timeline_sub_profit = px.line(
             df_timeline_sub, x='Order Date', y="Profit")
         fig_timeline_sub_profit.update_layout(
             margin={"r": 15, "t": 15, "l": 15, "b": 15})
+        fig_timeline_sub_profit.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
 
         fig_timeline_sub_count = px.line(
             df_timeline_sub, x='Order Date', y="Quantity")
         fig_timeline_sub_count.update_layout(
             margin={"r": 15, "t": 15, "l": 15, "b": 15})
+        fig_timeline_sub_count.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
 
         fig_value_subcategories_bar = px.bar(
             sub_df_date, x='Sales', y='Product Name')
         fig_value_subcategories_bar.update_layout(
             margin=dict(t=0, l=0, r=0, b=0))
+        fig_value_subcategories_bar.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
 
         fig_value_subcategories_bar_profit = px.bar(
             sub_df_date, x='Profit', y='Product Name')
         fig_value_subcategories_bar_profit.update_layout(
             margin=dict(t=0, l=0, r=0, b=0))
+        fig_value_subcategories_bar_profit.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
 
         fig_value_subcategories_bar_count = px.bar(
             sub_df_date, x='Quantity', y='Product Name')
         fig_value_subcategories_bar_count.update_layout(
             margin=dict(t=0, l=0, r=0, b=0))
+        fig_value_subcategories_bar_count.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
 
         children = html.Div(children=[
             dbc.Row(children=[
@@ -614,16 +626,19 @@ def cb_display_subcategory_dropown_callback(n, start_date, end_date):
             df_timeline_prod, x='Order Date', y="Sales")
         fig_timeline_prod_sales.update_layout(
             margin={"r": 15, "t": 15, "l": 15, "b": 15})
+        fig_timeline_prod_sales.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
 
         fig_timeline_prod_profit = px.line(
             df_timeline_prod, x='Order Date', y="Profit")
         fig_timeline_prod_profit.update_layout(
             margin={"r": 15, "t": 15, "l": 15, "b": 15})
+        fig_timeline_prod_profit.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
 
         fig_timeline_prod_count = px.line(
             df_timeline_prod, x='Order Date', y="Quantity")
         fig_timeline_prod_count.update_layout(
             margin={"r": 15, "t": 15, "l": 15, "b": 15})
+        fig_timeline_prod_count.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
 
         children = html.Div(children=[
             dbc.Row(children=[

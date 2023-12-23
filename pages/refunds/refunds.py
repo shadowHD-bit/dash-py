@@ -192,8 +192,7 @@ def display_graph_region_callback(start_date, end_date):
     lists = list_df['Region_x'].value_counts()
     fig = px.bar(lists, x=lists.index, y=lists.values)
     fig.update_layout(xaxis_title="Region", yaxis_title="Count Refunds")
-    fig
-
+    fig.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
     children = html.Div(children=[
         dcc.Graph(
             figure=fig
@@ -232,8 +231,7 @@ def display_subcategory_dropown_callback(n, start_date, end_date):
         fig = px.bar(lists, x=lists.index, y=lists.values)
         fig.update_layout(xaxis_title="Product Name",
                           yaxis_title="Count Refunds")
-        fig
-
+        fig.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
         children = html.Div(children=[
             dcc.Graph(
                 figure=fig
