@@ -19,6 +19,7 @@ from dash import html, dcc, callback, Output, Input, State
 df = MAIN_DF
 merge_df = MERGED_DF
 
+
 layout = html.Div(children=[
     dcc.Store(id="current-time-store", storage_type='local'),
     dbc.Container(children=[

@@ -21,5 +21,4 @@ def build_header():
             ])
         ])
     ]),
-
     return header

@@ -15,5 +15,4 @@ def build_sidebar():
             dcc.Link(html.Div(f"{page['name']}"), href=page["relative_path"], className='sidebar__btn_links text-body') for page in dash.page_registry.values() if page['name'] != 'Index' and page['name'] != 'Страница не найдена'
         ]),
     ]),
-
     return sidebar

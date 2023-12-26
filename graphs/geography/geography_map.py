@@ -3,6 +3,9 @@ import plotly.express as px
 import pandas as pd
 
 def build_geography_map(candidate):
+    '''
+    Функция создания карты географической статистики по континентам
+    '''
     total_sales_by_country = MAIN_DF.groupby(
             'Country', as_index=False)[candidate].sum()
         

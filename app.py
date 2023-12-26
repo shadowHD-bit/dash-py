@@ -1,3 +1,7 @@
+'''
+Основной файл проекта.
+'''
+
 import time
 import dash
 from dash import Dash, html, dcc, Output, Input, State
@@ -14,6 +18,7 @@ long_callback_manager = DiskcacheLongCallbackManager(cache)
 
 app = Dash(__name__, use_pages=True,  external_stylesheets=[
            dbc.icons.BOOTSTRAP, dbc.themes.BOOTSTRAP], suppress_callback_exceptions=True, long_callback_manager=long_callback_manager)
+server = app.server
 
 register_pages()
 
@@ -21,7 +26,6 @@ app.layout = dbc.Container(id='main_container', children=[
     # Инициализация локального хранилища
     dcc.Store(id="current-time-store", data="",  storage_type='local'),
     dcc.Store(id="current-theme-store", data="",  storage_type='local'),
-
     # Прелоадер страницы
     dcc.Loading(
         id="loading-1",
@@ -31,10 +35,8 @@ app.layout = dbc.Container(id='main_container', children=[
                       'backgroundColor': '#fff', 'zIndex': 9, 'justifyContent': 'center'},
         children=html.Div(id="loading-output-1")
     ),
-
     # Для получения url
     dcc.Location(id='uri', refresh=False),
-
     # Главная разметка
     html.Div(id='out_theme', children=[]),
     dbc.Row(className='p-0 m-0', children=[
@@ -90,9 +92,8 @@ app.layout = dbc.Container(id='main_container', children=[
     ])
 ], fluid=True, style={'margin': 0, 'padding': '20px 0px', 'height': '100%'})
 
+
 # Вывод текущей даты из стора
-
-
 @app.callback(
     Output('date_container', 'children'),
     Input('current-time-store', 'modified_timestamp'),
@@ -104,9 +105,8 @@ def cb_output_current_data(ts, value):
     else:
         return html.P(f'Текщая дата: {START_DATE}', className='text', id='curr_date__header')
 
+
 # Обновление темы дэша
-
-
 @app.callback(
     Output('current-theme-store', 'data'),
     Input(ThemeSwitchAIO.ids.switch('theme'), 'value'),
@@ -118,9 +118,8 @@ def cb_update_current_theme(value, state):
     else:
         return str(NAME_THEME_DARK)
 
+
 # Обновление темы в локальном хранилище
-
-
 @app.callback(
     Output(ThemeSwitchAIO.ids.switch('theme'), 'value'),
     Input('current-theme-store', 'modified_timestamp'),
@@ -132,9 +131,8 @@ def cb_update_theme_local(ts, value):
     else:
         return False
 
+
 # Получения имени текущей страницы для breadcrumb
-
-
 @app.callback(
     Output('breadcrumb', 'items'),
     Input('uri', 'href')
@@ -157,9 +155,8 @@ def cb_get_name_page(uri):
         ]
     return items_breadcrumb
 
+
 # Инициализация прелоадера при загрузке страницы
-
-
 @app.callback(
     [Output("loading-output-1", "children"),
      Output("loading-1", "parent_className")],

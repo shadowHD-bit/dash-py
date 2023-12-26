@@ -24,5 +24,4 @@ def build_statistic_card(icon_class, title_text, body_text, designation):
         ]
         )
     ])
-
     return card

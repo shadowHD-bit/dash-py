@@ -19,5 +19,4 @@ def build_alert_link_page(name_page, description, page_link, color_alert):
         ),
     ], color=color_alert
     )
-
     return alert

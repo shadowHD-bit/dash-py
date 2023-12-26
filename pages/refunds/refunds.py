@@ -1,20 +1,23 @@
+'''
+Модуль страницы статистики по возвратам. Дополнитеьные функции отсутствуют.
+'''
+
 from datetime import date
-import dash
-from dash import html, dcc, callback, Output, Input, dash_table
-import dash_bootstrap_components as dbc
+from dash import html, dcc, callback, Output, Input
 from data import MAIN_DF, RETURNS_DF
-import pandas as pd
 from partials.loader_params import build_loader_params
 from partials.statistic_card import build_statistic_card
 import plotly.express as px
-import dash_ag_grid as dag
+import dash_bootstrap_components as dbc
+import pandas as pd
+
 
 return_df = RETURNS_DF
 main_df = MAIN_DF
 merged_df = pd.merge(return_df, main_df, on='Order ID')
-
 list_region = merged_df['Region_x'].value_counts()
 list_prod = merged_df['Product Name'].value_counts()
+
 
 layout = html.Div([
     dbc.Row(className="mt-2 mb-3", children=[
@@ -141,6 +144,7 @@ layout = html.Div([
 ])
 
 
+# Обратный вызов обновления выпадающего списка
 @callback(
     [Output("picker_sub_ref", "className"),
      Output("picker_sub_ref", "options")],
@@ -155,6 +159,7 @@ def display_subcategory_dropown_call(n):
         return 'd-none', []
 
 
+# Обратный вызов обновления списка возвратов
 @callback(
     Output("list_ref", "children"),
     [Input("picker_sub_ref", "value"),
@@ -177,6 +182,7 @@ def display_subcategory_dropown_callback(n, start_date, end_date):
         return build_loader_params()
 
 
+# Обратный вызов обновления статистики по регионам
 @callback(
     Output("region_graph__container", "children"),
     [Input('picker_date_region', 'start_date'),
@@ -200,6 +206,7 @@ def display_graph_region_callback(start_date, end_date):
     return children
 
 
+# Обратный вызов обновления выпадающего списка
 @callback(
     [Output("sub_product_dropdown_ref", "className"),
      Output("sub_product_dropdown_ref", "options")],
@@ -214,6 +221,7 @@ def display_subcategory_dropown_callback(n):
         return 'd-none', []
 
 
+# Обратный вызов обновления статистики по городам
 @callback(
     Output("prod_graph__container", "children"),
     [Input("sub_product_dropdown_ref", "value"),

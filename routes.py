@@ -1,3 +1,7 @@
+'''
+Файл регистрации страниц дэшборда.
+'''
+
 import dash
 import pages.dataset.dataset as dataset
 import pages.main.main as main

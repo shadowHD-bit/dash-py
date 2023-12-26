@@ -1,3 +1,7 @@
+'''
+Модуль страницы статистики по товарам. Дополнитеьные функции отсутствуют.
+'''
+
 import dash_bootstrap_components as dbc
 import plotly.express as px
 from dash import html, dcc, callback, Output, Input
@@ -10,7 +14,9 @@ from partials.loader_params import build_loader_params
 from partials.statistic_card import build_statistic_card
 from datetime import date
 
+
 df = MAIN_DF
+
 
 layout = html.Div([
     dbc.Row(className="mt-2 mb-3", children=[
@@ -270,6 +276,7 @@ layout = html.Div([
 ])
 
 
+# Обратный вызов обновления статистики по категориям
 @callback(
     Output("cat_stat_container", "children"),
     [Input("stat_drop_category", "value"),
@@ -289,27 +296,32 @@ def display_category_callback(n, start_date, end_date):
 
         fig_value_subcategories_pie = px.pie(
             cat_df_date, values='Sales', names='Sub-Category')
-        fig_value_subcategories_pie.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
+        fig_value_subcategories_pie.update_layout(
+            paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
         fig_value_subcategories_pie.update_traces(
             textposition='inside', textinfo='percent+label')
         fig_value_subcategories_pie.update_layout(
             margin=dict(t=0, l=0, r=0, b=0))
-        fig_value_subcategories_pie.update_layout(legend=dict(font=dict(color="#0077b6")))
-
+        fig_value_subcategories_pie.update_layout(
+            legend=dict(font=dict(color="#0077b6")))
 
         fig_timeline_sub_sales = px.line(
             df_timeline_sub, x='Order Date', y="Sales")
         fig_timeline_sub_sales.update_layout(
             margin={"r": 15, "t": 15, "l": 15, "b": 15})
-        fig_timeline_sub_sales.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
-        fig_timeline_sub_sales.update_layout(legend=dict(font=dict(color="#0077b6")))
+        fig_timeline_sub_sales.update_layout(
+            paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
+        fig_timeline_sub_sales.update_layout(
+            legend=dict(font=dict(color="#0077b6")))
 
         fig_timeline_sub_profit = px.line(
             df_timeline_sub, x='Order Date', y="Profit")
         fig_timeline_sub_profit.update_layout(
             margin={"r": 15, "t": 15, "l": 15, "b": 15})
-        fig_timeline_sub_profit.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
-        fig_timeline_sub_profit.update_layout(legend=dict(font=dict(color="#0077b6")))
+        fig_timeline_sub_profit.update_layout(
+            paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
+        fig_timeline_sub_profit.update_layout(
+            legend=dict(font=dict(color="#0077b6")))
 
         fig_value_subcategories_pie_count = px.pie(
             cat_df_date, values='Quantity', names='Sub-Category')
@@ -317,15 +329,19 @@ def display_category_callback(n, start_date, end_date):
             textposition='inside', textinfo='percent+label')
         fig_value_subcategories_pie_count.update_layout(
             margin=dict(t=0, l=0, r=0, b=0))
-        fig_value_subcategories_pie_count.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
-        fig_value_subcategories_pie_count.update_layout(legend=dict(font=dict(color="#0077b6")))
+        fig_value_subcategories_pie_count.update_layout(
+            paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
+        fig_value_subcategories_pie_count.update_layout(
+            legend=dict(font=dict(color="#0077b6")))
 
         fig_timeline_sub_count = px.line(
             df_timeline_sub, x='Order Date', y="Quantity")
         fig_timeline_sub_count.update_layout(
             margin={"r": 15, "t": 15, "l": 15, "b": 15})
-        fig_timeline_sub_count.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
-        fig_timeline_sub_count.update_layout(legend=dict(font=dict(color="#0077b6")))
+        fig_timeline_sub_count.update_layout(
+            paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
+        fig_timeline_sub_count.update_layout(
+            legend=dict(font=dict(color="#0077b6")))
 
         children = html.Div(children=[
             dbc.Row(children=[
@@ -386,12 +402,12 @@ def display_category_callback(n, start_date, end_date):
                 ], xs=6),
             ]),
         ])
-
         return children
     else:
         return build_loader_params()
 
 
+# Обратный вызов обновления выпадающего списка
 @callback(
     [Output("sub_dropdown", "className"),
      Output("sub_dropdown", "options")],
@@ -406,6 +422,7 @@ def cb_display_subcategory_dropown_callback(n):
         return 'd-none', []
 
 
+# Обратный вызов обновления статсистики по подкатегориям
 @callback(
     Output("subcat_stat_container", "children"),
     [Input("sub_dropdown", "value"),
@@ -427,43 +444,55 @@ def cb_display_subcategory_callback(n, start_date, end_date):
             df_timeline_sub, x='Order Date', y="Sales")
         fig_timeline_sub_sales.update_layout(
             margin={"r": 15, "t": 15, "l": 15, "b": 15})
-        fig_timeline_sub_sales.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
-        fig_timeline_sub_sales.update_layout(legend=dict(font=dict(color="#0077b6")))
+        fig_timeline_sub_sales.update_layout(
+            paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
+        fig_timeline_sub_sales.update_layout(
+            legend=dict(font=dict(color="#0077b6")))
 
         fig_timeline_sub_profit = px.line(
             df_timeline_sub, x='Order Date', y="Profit")
         fig_timeline_sub_profit.update_layout(
             margin={"r": 15, "t": 15, "l": 15, "b": 15})
-        fig_timeline_sub_profit.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
-        fig_timeline_sub_profit.update_layout(legend=dict(font=dict(color="#0077b6")))
+        fig_timeline_sub_profit.update_layout(
+            paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
+        fig_timeline_sub_profit.update_layout(
+            legend=dict(font=dict(color="#0077b6")))
 
         fig_timeline_sub_count = px.line(
             df_timeline_sub, x='Order Date', y="Quantity")
         fig_timeline_sub_count.update_layout(
             margin={"r": 15, "t": 15, "l": 15, "b": 15})
-        fig_timeline_sub_count.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
-        fig_timeline_sub_count.update_layout(legend=dict(font=dict(color="#0077b6")))
+        fig_timeline_sub_count.update_layout(
+            paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
+        fig_timeline_sub_count.update_layout(
+            legend=dict(font=dict(color="#0077b6")))
 
         fig_value_subcategories_bar = px.bar(
             sub_df_date, x='Sales', y='Product Name')
         fig_value_subcategories_bar.update_layout(
             margin=dict(t=0, l=0, r=0, b=0))
-        fig_value_subcategories_bar.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
-        fig_value_subcategories_bar.update_layout(legend=dict(font=dict(color="#0077b6")))
+        fig_value_subcategories_bar.update_layout(
+            paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
+        fig_value_subcategories_bar.update_layout(
+            legend=dict(font=dict(color="#0077b6")))
 
         fig_value_subcategories_bar_profit = px.bar(
             sub_df_date, x='Profit', y='Product Name')
         fig_value_subcategories_bar_profit.update_layout(
             margin=dict(t=0, l=0, r=0, b=0))
-        fig_value_subcategories_bar_profit.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
-        fig_value_subcategories_bar_profit.update_layout(legend=dict(font=dict(color="#0077b6")))
+        fig_value_subcategories_bar_profit.update_layout(
+            paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
+        fig_value_subcategories_bar_profit.update_layout(
+            legend=dict(font=dict(color="#0077b6")))
 
         fig_value_subcategories_bar_count = px.bar(
             sub_df_date, x='Quantity', y='Product Name')
         fig_value_subcategories_bar_count.update_layout(
             margin=dict(t=0, l=0, r=0, b=0))
-        fig_value_subcategories_bar_count.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
-        fig_value_subcategories_bar_count.update_layout(legend=dict(font=dict(color="#0077b6")))
+        fig_value_subcategories_bar_count.update_layout(
+            paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
+        fig_value_subcategories_bar_count.update_layout(
+            legend=dict(font=dict(color="#0077b6")))
 
         children = html.Div(children=[
             dbc.Row(children=[
@@ -526,6 +555,7 @@ def cb_display_subcategory_callback(n, start_date, end_date):
         return build_loader_params()
 
 
+# Обратный вызов обновления иерархической карты
 @callback(
     Output("container_treemap", "children"),
     [Input("get_params_treemap", "value")]
@@ -540,6 +570,7 @@ def cb_build_treemap_callback(value):
     return treemap
 
 
+# Обратный вызов обновления графика топа категорий
 @callback(
     Output("hist_top_category", "children"),
     [Input("get_category_top", "value"),
@@ -556,6 +587,7 @@ def cb_build_category_top_hist_callback(value, start_date, end_date):
     return graph_container
 
 
+# Обратный вызов обновления топа подкатегорий
 @callback(
     Output("hist_top_subcategory", "children"),
     [Input("get_subcategory_top", "value"),
@@ -573,6 +605,7 @@ def cb_build_subcategory_top_hist_callback(value, start_date, end_date):
     return graph_container
 
 
+# Обратный вызов обновления топа товаров
 @callback(
     Output("hist_top_product", "children"),
     [Input("get_product_top", "value"),
@@ -590,6 +623,7 @@ def cb_build_product_top_hist_callback(value, start_date, end_date):
     return graph_container
 
 
+# Обратный вызов обновления выпадающего списка
 @callback(
     [Output("sub_product_dropdown", "className"),
      Output("sub_product_dropdown", "options")],
@@ -604,6 +638,7 @@ def cb_display_subcategory_dropown_callback(n):
         return 'd-none', []
 
 
+# Обратный вызов обновления выпадающего списка
 @callback(
     [Output("product_dropdown", "className"),
      Output("product_dropdown", "options")],
@@ -619,6 +654,7 @@ def cb_display_subcategory_dropown_callback(n, n_pred):
         return 'd-none', []
 
 
+# Обратный вызов обновления статистики по товарам
 @callback(
     Output("product_containet__content", "children"),
     [Input("product_dropdown", "value"),
@@ -640,22 +676,28 @@ def cb_display_subcategory_dropown_callback(n, start_date, end_date):
             df_timeline_prod, x='Order Date', y="Sales")
         fig_timeline_prod_sales.update_layout(
             margin={"r": 15, "t": 15, "l": 15, "b": 15})
-        fig_timeline_prod_sales.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
-        fig_timeline_prod_sales.update_layout(legend=dict(font=dict(color="#0077b6")))
+        fig_timeline_prod_sales.update_layout(
+            paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
+        fig_timeline_prod_sales.update_layout(
+            legend=dict(font=dict(color="#0077b6")))
 
         fig_timeline_prod_profit = px.line(
             df_timeline_prod, x='Order Date', y="Profit")
         fig_timeline_prod_profit.update_layout(
             margin={"r": 15, "t": 15, "l": 15, "b": 15})
-        fig_timeline_prod_profit.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
-        fig_timeline_prod_profit.update_layout(legend=dict(font=dict(color="#0077b6")))
+        fig_timeline_prod_profit.update_layout(
+            paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
+        fig_timeline_prod_profit.update_layout(
+            legend=dict(font=dict(color="#0077b6")))
 
         fig_timeline_prod_count = px.line(
             df_timeline_prod, x='Order Date', y="Quantity")
         fig_timeline_prod_count.update_layout(
             margin={"r": 15, "t": 15, "l": 15, "b": 15})
-        fig_timeline_prod_count.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
-        fig_timeline_prod_count.update_layout(legend=dict(font=dict(color="#0077b6")))
+        fig_timeline_prod_count.update_layout(
+            paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
+        fig_timeline_prod_count.update_layout(
+            legend=dict(font=dict(color="#0077b6")))
 
         children = html.Div(children=[
             dbc.Row(children=[

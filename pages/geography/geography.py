@@ -375,9 +375,8 @@ def cb_display_city_dropown(n, country):
         children = buld_children_stat('Country', country)
         return '', children
 
+
 # Отображение статистических графиков по выбранному городу
-
-
 @callback(
     Output("main_graph_city", "children", allow_duplicate=True),
     Input("city_dropdown", "value"),

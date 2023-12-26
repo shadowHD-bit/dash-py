@@ -1,7 +1,9 @@
 import plotly.express as px
 
 def build_pie_category_value(df):
-    ''' Retrun pie graphs category values'''
+    '''
+    Функция создания круговой диаграммы топа категорий
+    '''
     fig_value_categories_pie = px.pie(df, values='Quantity', names='Category')
     fig_value_categories_pie.update_traces(
         textposition='inside', textinfo='percent+label')

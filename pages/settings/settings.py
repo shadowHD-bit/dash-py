@@ -1,10 +1,13 @@
-from datetime import datetime
-import dash
-from dash import html, dcc, callback, Output, Input, State
-import dash_bootstrap_components as dbc
-from datetime import date
+'''
+Модуль страницы настроек дэшборда. Дополнитеьные функции отсутствуют.
+'''
 
+import dash_bootstrap_components as dbc
+from datetime import datetime
+from dash import html, dcc, callback, Output, Input, State
+from datetime import date
 from utils.const import START_DATE
+
 
 layout = html.Div(style={'margin': '10px'}, children=[
     dbc.Row(className="mb-3", children=[
@@ -39,11 +42,12 @@ layout = html.Div(style={'margin': '10px'}, children=[
                     ]),
                 ])
             ], xs=12, md=6, lg=6),
-            ])
-
+        ]
+    )
 ])
 
 
+# Обратный вызов обновления даты поля ввода
 @callback(
     Output('my-date-picker-single', 'date'),
     Input('current-time-store', 'modified_timestamp'),
@@ -56,6 +60,7 @@ def update_output(ts, value):
         return datetime.strptime(START_DATE, '%Y-%m-%d').date()
 
 
+# Обратный вызов обновления локального хранилища текущей даты
 @callback(
     Output('current-time-store', 'data'),
     Input('my-date-picker-single', 'date'),
@@ -64,4 +69,3 @@ def update_output(ts, value):
 def update_local_output(value, state):
     if value:
         return str(value)
-

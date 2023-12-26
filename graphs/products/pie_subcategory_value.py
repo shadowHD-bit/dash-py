@@ -1,8 +1,9 @@
 import plotly.express as px
 
-
 def build_pie_subcategory_value(df):
-    ''' Retrun pie graphs subcategory values'''
+    '''
+    Функция создания круговой диаграммы топа подкатегорий
+    '''
     fig_value_subcategories_pie = px.pie(
         df, values='Quantity', names='Sub-Category')
     fig_value_subcategories_pie.update_traces(
