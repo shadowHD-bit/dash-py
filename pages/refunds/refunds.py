@@ -4,6 +4,7 @@ from dash import html, dcc, callback, Output, Input, dash_table
 import dash_bootstrap_components as dbc
 from data import MAIN_DF, RETURNS_DF
 import pandas as pd
+from partials.loader_params import build_loader_params
 from partials.statistic_card import build_statistic_card
 import plotly.express as px
 import dash_ag_grid as dag
@@ -135,7 +136,7 @@ layout = html.Div([
         ], xs=3),
     ]),
     dbc.Row(id='list_ref', className='p-3', children=[
-
+        build_loader_params()
     ]),
 ])
 
@@ -173,7 +174,7 @@ def display_subcategory_dropown_callback(n, start_date, end_date):
 
         return list_
     else:
-        return ""
+        return build_loader_params()
 
 
 @callback(
@@ -188,7 +189,8 @@ def display_graph_region_callback(start_date, end_date):
     lists = list_df['Region_x'].value_counts()
     fig = px.bar(lists, x=lists.index, y=lists.values)
     fig.update_layout(xaxis_title="Region", yaxis_title="Count Refunds")
-    fig.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
+    fig.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)',
+                      plot_bgcolor='rgba(0, 0, 0, 0.0)')
     fig.update_layout(legend=dict(font=dict(color="#0077b6")))
     children = html.Div(children=[
         dcc.Graph(
@@ -228,7 +230,8 @@ def display_subcategory_dropown_callback(n, start_date, end_date):
         fig = px.bar(lists, x=lists.index, y=lists.values)
         fig.update_layout(xaxis_title="Product Name",
                           yaxis_title="Count Refunds")
-        fig.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
+        fig.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)',
+                          plot_bgcolor='rgba(0, 0, 0, 0.0)')
         fig.update_layout(legend=dict(font=dict(color="#0077b6")))
         children = html.Div(children=[
             dcc.Graph(
@@ -237,4 +240,4 @@ def display_subcategory_dropown_callback(n, start_date, end_date):
         ])
         return children
     else:
-        return ''
+        return build_loader_params()

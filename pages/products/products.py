@@ -6,6 +6,7 @@ from graphs.products.category_top_hist import build_bar_top_category
 from graphs.products.product_top_hist import build_bar_top_product
 from graphs.products.subcategory_top_hist import build_bar_top_subcategory
 from graphs.products.treemap_product import build_treemap_product
+from partials.loader_params import build_loader_params
 from partials.statistic_card import build_statistic_card
 from datetime import date
 
@@ -188,7 +189,7 @@ layout = html.Div([
                         ], xs=3),
                     ]),
                     dbc.Row(id='product_containet__content', children=[
-
+                        build_loader_params()
                     ])
                 ],
                 title="Статистика по товару",
@@ -218,6 +219,7 @@ layout = html.Div([
                     ]),
                     dbc.Row(
                         dbc.Col(id="cat_stat_container", children=[
+                            build_loader_params()
                         ], xs=12)
                     )
                 ],
@@ -257,6 +259,7 @@ layout = html.Div([
                     ]),
                     dbc.Row(
                         dbc.Col(id="subcat_stat_container", children=[
+                            build_loader_params()
                         ], xs=12)
                     )
                 ],
@@ -386,7 +389,7 @@ def display_category_callback(n, start_date, end_date):
 
         return children
     else:
-        return ""
+        return build_loader_params()
 
 
 @callback(
@@ -520,7 +523,7 @@ def cb_display_subcategory_callback(n, start_date, end_date):
         ])
         return children
     else:
-        return ""
+        return build_loader_params()
 
 
 @callback(
@@ -686,4 +689,4 @@ def cb_display_subcategory_dropown_callback(n, start_date, end_date):
         ])
         return children
     else:
-        return ''
+        return build_loader_params()
