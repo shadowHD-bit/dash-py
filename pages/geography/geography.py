@@ -28,19 +28,22 @@ def buld_children_stat(param, value_param, start_date=date(2012, 1, 1), end_date
     fig_timeline_sales = px.line(df_timeline, x='Order Date', y="Sales")
     fig_timeline_sales.update_layout(
         margin={"r": 15, "t": 15, "l": 15, "b": 15})
-    fig_timeline_sales.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
+    fig_timeline_sales.update_layout(
+        paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
     fig_timeline_sales.update_layout(legend=dict(font=dict(color="#0077b6")))
 
     fig_timeline_profit = px.line(df_timeline, x='Order Date', y="Profit")
     fig_timeline_profit.update_layout(
         margin={"r": 15, "t": 15, "l": 15, "b": 15})
-    fig_timeline_profit.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
+    fig_timeline_profit.update_layout(
+        paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
     fig_timeline_profit.update_layout(legend=dict(font=dict(color="#0077b6")))
 
     fig_timeline_count = px.line(df_timeline, x='Order Date', y="Quantity")
     fig_timeline_count.update_layout(
         margin={"r": 15, "t": 15, "l": 15, "b": 15})
-    fig_timeline_count.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
+    fig_timeline_count.update_layout(
+        paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
     fig_timeline_count.update_layout(legend=dict(font=dict(color="#0077b6")))
 
     sum_sales = df_timeline['Sales'].values.sum()
@@ -49,32 +52,40 @@ def buld_children_stat(param, value_param, start_date=date(2012, 1, 1), end_date
 
     fig_bar_sales = px.bar(df_timelinef, y="Category",
                            x="Sales", color="Sub-Category", barmode="group")
-    fig_bar_sales.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
+    fig_bar_sales.update_layout(
+        paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
     fig_bar_sales.update_layout(legend=dict(font=dict(color="#0077b6")))
 
     fig_bar_profit = px.bar(
         df_timelinef, y="Category", x="Profit", color="Sub-Category", barmode="group")
-    fig_bar_profit.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
+    fig_bar_profit.update_layout(
+        paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
     fig_bar_profit.update_layout(legend=dict(font=dict(color="#0077b6")))
-    
+
     fig_bar_count = px.bar(df_timelinef, y="Category",
                            x="Quantity", color="Sub-Category", barmode="group")
-    fig_bar_count.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
+    fig_bar_count.update_layout(
+        paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
     fig_bar_count.update_layout(legend=dict(font=dict(color="#0077b6")))
 
     fig_cyc_sales = px.pie(df_timelinef, values='Sales', names='Sub-Category')
-    fig_cyc_sales.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
+    fig_cyc_sales.update_layout(
+        paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
     fig_cyc_sales.update_layout(legend=dict(font=dict(color="#0077b6")))
 
-    fig_cyc_profit = px.pie(df_timelinef, values='Profit', names='Sub-Category')
-    fig_cyc_profit.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
+    fig_cyc_profit = px.pie(
+        df_timelinef, values='Profit', names='Sub-Category')
+    fig_cyc_profit.update_layout(
+        paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
     fig_cyc_profit.update_layout(legend=dict(font=dict(color="#0077b6")))
 
-    fig_cyc_count = px.pie(df_timelinef, values='Quantity', names='Sub-Category')
-    fig_cyc_count.update_layout(paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
+    fig_cyc_count = px.pie(
+        df_timelinef, values='Quantity', names='Sub-Category')
+    fig_cyc_count.update_layout(
+        paper_bgcolor='rgba(0, 0, 0, 0.0)', plot_bgcolor='rgba(0, 0, 0, 0.0)')
     fig_cyc_count.update_layout(legend=dict(font=dict(color="#0077b6")))
 
-    children = dbc.Row(id='stat_container_geo',children=[
+    children = dbc.Row(id='stat_container_geo', children=[
         dbc.Row(children=[
             dbc.Col(children=[
                 dcc.DatePickerRange(
@@ -324,7 +335,7 @@ def cb_display_country_dropown(n):
         return dropdown, children, '', ''
     else:
         loading = build_loader_params()
-        return '', loading , '', ''
+        return '', loading, '', ''
 
 
 # Отображение выпадающего спискака выбора штата
@@ -392,10 +403,11 @@ def display_city_graph(city, state):
         return children
 
 
+# Отображение статистических карт
 @callback(
-    Output("main_graph_city", "children", allow_duplicate=True),    
+    Output("main_graph_city", "children", allow_duplicate=True),
     [Input('picker_date_geo_stat', 'start_date'),
-    Input('picker_date_geo_stat', 'end_date')],
+     Input('picker_date_geo_stat', 'end_date')],
     [State("region_dropdown", "value"),
      State("country_dropdown", "value"),
      State("state_dropdown", "value"),
@@ -404,16 +416,20 @@ def display_city_graph(city, state):
 )
 def cb_change_date(start_date, end_date, region, country, state, city):
     if city:
-        children = buld_children_stat('City', city, start_date=start_date, end_date=end_date)
+        children = buld_children_stat(
+            'City', city, start_date=start_date, end_date=end_date)
         return children
     elif state:
-        children = buld_children_stat('State', state, start_date=start_date, end_date=end_date)
+        children = buld_children_stat(
+            'State', state, start_date=start_date, end_date=end_date)
         return children
     elif country:
-        children = buld_children_stat('Country', country, start_date=start_date, end_date=end_date)
+        children = buld_children_stat(
+            'Country', country, start_date=start_date, end_date=end_date)
         return children
     elif region:
-        children = buld_children_stat('Region', region, start_date=start_date, end_date=end_date)
+        children = buld_children_stat(
+            'Region', region, start_date=start_date, end_date=end_date)
         return children
     else:
         loading = build_loader_params()
