@@ -58,5 +58,5 @@ layout = html.Div([
 )
 def cb_download_dataset(n_clicks):
     return dcc.send_file(
-        "data\data.xlsx"
+        "data/data.xlsx"
     )
